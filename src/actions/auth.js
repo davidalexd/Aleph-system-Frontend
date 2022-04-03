@@ -17,6 +17,7 @@ export const startLoginEmailPassword = (email, password) => {
       .then((resp) => resp.json())
       .then(({ data, access }) => {
         document.cookie = `token=${access.token}; max-age=${60 * 3} path=/; samesite=strict`
+        localStorage.setItem('user', `${data.first_name} ${data.last_name}`)
         dispatch(login(data.id, `${data.first_name} ${data.last_name}`))
         dispatch(finishLoading())
       })

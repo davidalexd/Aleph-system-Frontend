@@ -20,22 +20,28 @@ import { AuthContext } from 'src/auth/authContext'
 import { useForm } from 'src/hooks/useForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { startLoginEmailPassword } from 'src/actions/auth'
+import { types } from 'src/types/types'
 
 const Login = () => {
-  const dispatch = useDispatch()
-  const { loading } = useSelector((state) => state.ui)
+  //const dispatch = useDispatch()
+  //const { loading } = useSelector((state) => state.ui)
   const navigate = useNavigate()
-  // const { dispatch } = useContext(AuthContext)
+  const { dispatch } = useContext(AuthContext)
   const [formValues, handleInputChange] = useForm({
     email: 'farfan@gmail.com',
     password: '12345',
   })
-
   const { email, password } = formValues
-  const handleLogin = (e) => {
-    e.preventDefault()
-    dispatch(startLoginEmailPassword(email, password))
-    navigate('/#/dashboard', {
+
+  const handleLogin = () => {
+    const action = {
+      type: types.login,
+      payload: { name: email },
+    }
+
+    dispatch(action)
+
+    navigate('/dashboard', {
       replace: true,
     })
   }
@@ -77,12 +83,7 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton
-                          onClick={handleLogin}
-                          color="primary"
-                          className="px-4"
-                          disabled={loading}
-                        >
+                        <CButton onClick={handleLogin} color="primary" className="px-4">
                           Login
                         </CButton>
                       </CCol>

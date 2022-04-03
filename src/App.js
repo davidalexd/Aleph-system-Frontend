@@ -24,32 +24,40 @@ const Register = React.lazy(() => import('./views/pages/register/Register'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
+const init = () => {
+  return JSON.parse(localStorage.getItem('user')) || {}
+}
 const initToken = document.cookie.replace('token=', '')
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [checking, setChecking] = useState(true)
-  const dispatch = useDispatch()
-  const [token, setToken] = useState(initToken)
+  //const [checking, setChecking] = useState(true)
+  //const dispatch = useDispatch()
+  //const [token, setToken] = useState(initToken)
+  const [user, dispatch] = useReducer(authReducer, {}, init)
 
-  useEffect(() => {
-    console.log(token)
-    if (token) {
-      console.log('pase por aqui')
-      dispatch(login(1, 'Gustavo Farfan'))
-      setIsLoggedIn(true)
-    } else {
-      setIsLoggedIn(false)
-    }
-    setChecking(false)
-  }, [setIsLoggedIn, setChecking, token])
+  // useEffect(() => {
+  //   console.log(token)
+  //   if (token) {
+  //     console.log('pase por aqui')
+  //     dispatch(login(1, 'Gustavo Farfan'))
+  //     setIsLoggedIn(true)
+  //   } else {
+  //     setIsLoggedIn(false)
+  //   }
+  //   setChecking(false)
+  // }, [setIsLoggedIn, setChecking, token])
 
   // if (checking) {
   //   return <h1>Esperen...</h1>
   // }
 
+  useEffect(() => {
+    if (!user) return
+    localStorage.setItem('user', JSON.stringify(user))
+  }, [user])
+
   return (
-    <Provider store={storeApp}>
-      {/* <AuthContext.Provider value={{ user, dispatch }}> */}
+    <AuthContext.Provider value={{ user, dispatch }}>
       <HashRouter>
         <Suspense fallback={loading}>
           <Routes>
@@ -60,7 +68,7 @@ const App = () => {
             <Route
               path="/login"
               element={
-                <PublicRoute isLoggedIn={isLoggedIn}>
+                <PublicRoute>
                   <Login />
                 </PublicRoute>
               }
@@ -69,7 +77,7 @@ const App = () => {
             <Route
               path="*"
               element={
-                <PrivateRoute isLoggedIn={isLoggedIn}>
+                <PrivateRoute>
                   <DefaultLayout />
                 </PrivateRoute>
               }
@@ -77,8 +85,7 @@ const App = () => {
           </Routes>
         </Suspense>
       </HashRouter>
-      {/* </AuthContext.Provider> */}
-    </Provider>
+    </AuthContext.Provider>
   )
 }
 
