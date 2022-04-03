@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
   CAvatar,
   CBadge,
@@ -24,16 +24,14 @@ import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
 import { useNavigate } from 'react-router-dom'
-import { types } from 'src/types/types'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { startLogout } from 'src/actions/auth'
 
 const AppHeaderDropdown = () => {
+  const { name } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
 
   const navigate = useNavigate()
-
-  // const { user, dispatch } = useContext(AuthContext)
   const handleLogout = () => {
     dispatch(startLogout())
 
@@ -48,7 +46,7 @@ const AppHeaderDropdown = () => {
         <CAvatar src={avatar8} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-light fw-semibold py-2">Nombre Aqui</CDropdownHeader>
+        <CDropdownHeader className="bg-light fw-semibold py-2">{name}</CDropdownHeader>
         <CDropdownItem href="#">
           <CIcon icon={cilBell} className="me-2" />
           Updates

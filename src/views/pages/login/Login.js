@@ -16,14 +16,13 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
-import { AuthContext } from 'src/auth/authContext'
 import { useForm } from 'src/hooks/useForm'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { startLoginEmailPassword } from 'src/actions/auth'
 
 const Login = () => {
   const dispatch = useDispatch()
-  //const { loading } = useSelector((state) => state.ui)
+  const { loading } = useSelector((state) => state.ui)
   const navigate = useNavigate()
   //const { dispatch } = useContext(AuthContext)
   const [formValues, handleInputChange] = useForm({
@@ -32,7 +31,8 @@ const Login = () => {
   })
   const { email, password } = formValues
 
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault()
     dispatch(startLoginEmailPassword(email, password))
 
     navigate('/dashboard', {
@@ -47,7 +47,7 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm onSubmit={handleLogin}>
                     <h1>Login</h1>
                     <p className="text-medium-emphasis">Sign In to your account</p>
                     <CInputGroup className="mb-3">
@@ -77,7 +77,7 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton onClick={handleLogin} color="primary" className="px-4">
+                        <CButton type="submit" color="primary" className="px-4" disabled={loading}>
                           Login
                         </CButton>
                       </CCol>

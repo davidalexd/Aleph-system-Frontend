@@ -2,7 +2,7 @@ import { types } from 'src/types/types'
 import { finishLoading, startLoading } from './ui'
 
 export const startLoginEmailPassword = (email, password) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(startLoading())
     let raw = JSON.stringify({
       email: email,
@@ -12,23 +12,17 @@ export const startLoginEmailPassword = (email, password) => {
       method: 'POST',
       body: raw,
     }
-
-    fetch('http://127.0.0.1:8000/api/login', requestOptions)
-      .then((resp) => resp.json())
-      .then(({ data, access }) => {
-        document.cookie = `token=${access.token}; max-age=${60 * 3} path=/; samesite=strict`
-        //localStorage.setItem('user', `${data.first_name} ${data.last_name}`)
-        dispatch(login(data.id, `${data.first_name} ${data.last_name}`))
-        dispatch(finishLoading())
-      })
-      .catch((e) => {
-        console.log(e)
-        dispatch(finishLoading())
-      })
-    // //aqui hacer el fetch ala api
-    // setTimeout(() => {
-    //   dispatch(login(123, 'pedro'))
-    // }, 3500)
+    try {
+      const resp = await fetch('http://127.0.0.1:8000/api/login', requestOptions)
+      const { data, access } = await resp.json()
+      document.cookie = `token=${access.token}; max-age=${60 * 3} path=/; samesite=strict`
+      //localStorage.setItem('user', `${data.first_name} ${data.last_name}`)
+      dispatch(login(data.id, `${data.first_name} ${data.last_name}`))
+      dispatch(finishLoading())
+    } catch (error) {
+      dispatch(finishLoading())
+      console.log(error)
+    }
   }
 }
 export const login = (uid, displayName) => ({

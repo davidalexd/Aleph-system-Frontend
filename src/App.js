@@ -24,18 +24,12 @@ const Register = React.lazy(() => import('./views/pages/register/Register'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
-// const init = () => {
-//   return JSON.parse(localStorage.getItem('user')) || {}
-// }
-//const initToken = document.cookie.replace('token=', '')
 const App = () => {
   const dispatch = useDispatch()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [checking, setChecking] = useState(true)
 
   const { uid } = useSelector((state) => state.auth)
-  //const [token, setToken] = useState(initToken)
-  // const [user, dispatch] = useReducer(authReducer, {}, init)
   useEffect(() => {
     if (uid || document.cookie) {
       dispatch(login(1, 'Gustavo Farfan'))
@@ -50,19 +44,13 @@ const App = () => {
     return <h1>Esperen...</h1>
   }
 
-  // useEffect(() => {
-  //   if (!user) return
-  //   localStorage.setItem('user', JSON.stringify(user))
-  // }, [user])
-
   return (
     <HashRouter>
       <Suspense fallback={loading}>
         <Routes>
-          {/* <Route exact path="/register" name="Register Page" element={<Register />} />
-            <Route exact path="/404" name="Page 404" element={<Page404 />} />
-            <Route exact path="/500" name="Page 500" element={<Page500 />} /> */}
-          {/* <Route exact path="/login" name="Login Page" element={<Login />} /> */}
+          {/* <Route exact path="/register" name="Register Page" element={<Register />} /> */}
+          <Route exact path="/404" name="Page 404" element={<Page404 />} />
+          <Route exact path="/500" name="Page 500" element={<Page500 />} />
           <Route
             path="/login"
             element={
@@ -71,7 +59,6 @@ const App = () => {
               </PublicRoute>
             }
           />
-          {/* <Route path="*" name="Home" element={<DefaultLayout />} /> */}
           <Route
             path="*"
             element={
