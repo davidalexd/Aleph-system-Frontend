@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useReducer, useState } from 'react'
-import { Provider, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { HashRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { login } from './actions/auth'
 import { AuthContext } from './auth/authContext'
@@ -7,7 +7,7 @@ import { authReducer } from './auth/authReducer'
 import { PrivateRoute } from './routers/PrivateRoute'
 import { PublicRoute } from './routers/PublicRoute'
 import './scss/style.scss'
-import { storeApp } from './store/storeApp'
+import { store } from './store/store'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -24,68 +24,65 @@ const Register = React.lazy(() => import('./views/pages/register/Register'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
-const init = () => {
-  return JSON.parse(localStorage.getItem('user')) || {}
-}
-const initToken = document.cookie.replace('token=', '')
+// const init = () => {
+//   return JSON.parse(localStorage.getItem('user')) || {}
+// }
+//const initToken = document.cookie.replace('token=', '')
 const App = () => {
+  const dispatch = useDispatch()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  //const [checking, setChecking] = useState(true)
-  //const dispatch = useDispatch()
+  const [checking, setChecking] = useState(true)
+
+  const { uid } = useSelector((state) => state.auth)
   //const [token, setToken] = useState(initToken)
-  const [user, dispatch] = useReducer(authReducer, {}, init)
+  // const [user, dispatch] = useReducer(authReducer, {}, init)
+  useEffect(() => {
+    if (uid || document.cookie) {
+      dispatch(login(1, 'Gustavo Farfan'))
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
+    }
+    setChecking(false)
+  }, [setIsLoggedIn, setChecking, uid])
+
+  if (checking) {
+    return <h1>Esperen...</h1>
+  }
 
   // useEffect(() => {
-  //   console.log(token)
-  //   if (token) {
-  //     console.log('pase por aqui')
-  //     dispatch(login(1, 'Gustavo Farfan'))
-  //     setIsLoggedIn(true)
-  //   } else {
-  //     setIsLoggedIn(false)
-  //   }
-  //   setChecking(false)
-  // }, [setIsLoggedIn, setChecking, token])
-
-  // if (checking) {
-  //   return <h1>Esperen...</h1>
-  // }
-
-  useEffect(() => {
-    if (!user) return
-    localStorage.setItem('user', JSON.stringify(user))
-  }, [user])
+  //   if (!user) return
+  //   localStorage.setItem('user', JSON.stringify(user))
+  // }, [user])
 
   return (
-    <AuthContext.Provider value={{ user, dispatch }}>
-      <HashRouter>
-        <Suspense fallback={loading}>
-          <Routes>
-            {/* <Route exact path="/register" name="Register Page" element={<Register />} />
+    <HashRouter>
+      <Suspense fallback={loading}>
+        <Routes>
+          {/* <Route exact path="/register" name="Register Page" element={<Register />} />
             <Route exact path="/404" name="Page 404" element={<Page404 />} />
             <Route exact path="/500" name="Page 500" element={<Page500 />} /> */}
-            {/* <Route exact path="/login" name="Login Page" element={<Login />} /> */}
-            <Route
-              path="/login"
-              element={
-                <PublicRoute>
-                  <Login />
-                </PublicRoute>
-              }
-            />
-            {/* <Route path="*" name="Home" element={<DefaultLayout />} /> */}
-            <Route
-              path="*"
-              element={
-                <PrivateRoute>
-                  <DefaultLayout />
-                </PrivateRoute>
-              }
-            />
-          </Routes>
-        </Suspense>
-      </HashRouter>
-    </AuthContext.Provider>
+          {/* <Route exact path="/login" name="Login Page" element={<Login />} /> */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute isAuthenticated={isLoggedIn}>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          {/* <Route path="*" name="Home" element={<DefaultLayout />} /> */}
+          <Route
+            path="*"
+            element={
+              <PrivateRoute isAuthenticated={isLoggedIn}>
+                <DefaultLayout />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Suspense>
+    </HashRouter>
   )
 }
 

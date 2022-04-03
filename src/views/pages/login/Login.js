@@ -18,15 +18,14 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
 
 import { AuthContext } from 'src/auth/authContext'
 import { useForm } from 'src/hooks/useForm'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { startLoginEmailPassword } from 'src/actions/auth'
-import { types } from 'src/types/types'
 
 const Login = () => {
-  //const dispatch = useDispatch()
+  const dispatch = useDispatch()
   //const { loading } = useSelector((state) => state.ui)
   const navigate = useNavigate()
-  const { dispatch } = useContext(AuthContext)
+  //const { dispatch } = useContext(AuthContext)
   const [formValues, handleInputChange] = useForm({
     email: 'farfan@gmail.com',
     password: '12345',
@@ -34,12 +33,7 @@ const Login = () => {
   const { email, password } = formValues
 
   const handleLogin = () => {
-    const action = {
-      type: types.login,
-      payload: { name: email },
-    }
-
-    dispatch(action)
+    dispatch(startLoginEmailPassword(email, password))
 
     navigate('/dashboard', {
       replace: true,

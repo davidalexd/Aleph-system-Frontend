@@ -23,20 +23,19 @@ import {
 import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
-import { AuthContext } from 'src/auth/authContext'
 import { useNavigate } from 'react-router-dom'
 import { types } from 'src/types/types'
 import { useDispatch } from 'react-redux'
 import { startLogout } from 'src/actions/auth'
 
 const AppHeaderDropdown = () => {
-  const { user, dispatch } = useContext(AuthContext)
+  const dispatch = useDispatch()
 
   const navigate = useNavigate()
 
   // const { user, dispatch } = useContext(AuthContext)
   const handleLogout = () => {
-    dispatch({ type: types.logout })
+    dispatch(startLogout())
 
     navigate('/login', {
       replace: true,
