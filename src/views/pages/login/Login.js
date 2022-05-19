@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
@@ -24,13 +24,13 @@ const Login = () => {
   const dispatch = useDispatch()
   const { loading } = useSelector((state) => state.ui)
   const navigate = useNavigate()
-  //const { dispatch } = useContext(AuthContext)
   const [formValues, handleInputChange] = useForm({
-    email: 'farfan@gmail.com',
-    password: '12345',
+    email: 'davidalexd@gmail.com',
+    password: '123456',
   })
   const { email, password } = formValues
-
+  
+  //aca haria en un useEfect que limpie la sesion en caso el usuario se haya olvidado de cerrar la sesion
   const handleLogin = (e) => {
     e.preventDefault()
     dispatch(startLoginEmailPassword(email, password))

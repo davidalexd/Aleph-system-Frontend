@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import { authReducer } from 'src/auth/authReducer'
+//import { authReducer } from 'src/auth/authReducer'
+import { authReducer } from 'src/reducers/auth/authReducer'
 import { changeStateReducer } from 'src/reducers/changeStateReducer'
 import { uiReducer } from 'src/reducers/uiReducer'
 

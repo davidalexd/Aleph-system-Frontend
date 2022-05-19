@@ -1,13 +1,10 @@
-import React, { Suspense, useEffect, useReducer, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { HashRouter, Route, Routes, Navigate } from 'react-router-dom'
-import { login } from './actions/auth'
-import { AuthContext } from './auth/authContext'
-import { authReducer } from './auth/authReducer'
+import { HashRouter, Route, Routes } from 'react-router-dom'
+import { login, startChecking } from './actions/auth'
 import { PrivateRoute } from './routers/PrivateRoute'
 import { PublicRoute } from './routers/PublicRoute'
 import './scss/style.scss'
-import { store } from './store/store'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -26,19 +23,11 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 const App = () => {
   const dispatch = useDispatch()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [checking, setChecking] = useState(true)
+  const { checking,uid } = useSelector((state) => state.auth)
 
-  const { uid } = useSelector((state) => state.auth)
   useEffect(() => {
-    if (uid || document.cookie) {
-      dispatch(login(1, 'Gustavo Farfan'))
-      setIsLoggedIn(true)
-    } else {
-      setIsLoggedIn(false)
-    }
-    setChecking(false)
-  }, [setIsLoggedIn, setChecking, uid])
+    dispatch(startChecking());
+  }, [ dispatch])
 
   if (checking) {
     return <h1>Esperen...</h1>
@@ -48,13 +37,13 @@ const App = () => {
     <HashRouter>
       <Suspense fallback={loading}>
         <Routes>
-          {/* <Route exact path="/register" name="Register Page" element={<Register />} /> */}
+          <Route exact path="/register" name="Register Page" element={<Register />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
           <Route
             path="/login"
             element={
-              <PublicRoute isAuthenticated={isLoggedIn}>
+              <PublicRoute isAuthenticated={!!uid}>
                 <Login />
               </PublicRoute>
             }
@@ -62,7 +51,7 @@ const App = () => {
           <Route
             path="*"
             element={
-              <PrivateRoute isAuthenticated={isLoggedIn}>
+              <PrivateRoute isAuthenticated={!!uid}>
                 <DefaultLayout />
               </PrivateRoute>
             }
