@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import {
   CAvatar,
@@ -21,6 +21,9 @@ import {
 import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
 import CIcon from '@coreui/icons-react'
+// excel to json converter
+import {ExcelToJson} from 'excel-to-json-in-react-js';
+
 import {
   cibCcAmex,
   cibCcApplePay,
@@ -53,6 +56,8 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
+import { useDispatch, useSelector } from 'react-redux'
+import { startUpdateAttendance } from 'src/actions/attedance'
 
 const Dashboard = () => {
   const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
@@ -177,10 +182,50 @@ const Dashboard = () => {
       activity: 'Last week',
     },
   ]
+//   const formateData ={
+//     idEmployee:"",
+//     nameEmployee: "",
+//     timeAtendance:"",
+//     assignedArea: ""
+// }
 
+  const formateData ={
+    idEmployee:"",
+    nameEmployee: "",
+    timeAtendance:"",
+    assignedArea: ""
+}
+
+
+  const [JsonData,setJsonData]=useState("");
+  const { attendanceUpdated } = useSelector((state) => state.attendance)
+  const dispatch = useDispatch()
+
+  const  updateData = ()=>{
+    if(!JsonData){
+      return console.log("datos vacios")
+    }
+    const arrayAttendance=  JsonData.map(el => 
+      {
+        return{
+          ...formateData,
+          idEmployee:el['ID de Usuario'],
+          nameEmployee:el.Nombre.replace(/\./g," "),
+          timeAtendance:el.Tiempo,
+          assignedArea:el['Nombre de la Terminal']
+        }
+      }
+      )
+      dispatch(startUpdateAttendance(arrayAttendance))
+    }
   return (
     <>
-      <WidgetsDropdown />
+    {console.log(attendanceUpdated)}
+    <ExcelToJson
+    JsonDataSetter={setJsonData}
+    />
+    <CButton color="primary" onClick={updateData}>Actualizar</CButton>
+          <WidgetsDropdown />
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
@@ -308,8 +353,8 @@ const Dashboard = () => {
         </CCardFooter>
       </CCard>
 
-      <WidgetsBrand withCharts />
-
+      {/* <WidgetsBrand withCharts /> */}
+{/* grafico de asistencias y tardanzas */}
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
