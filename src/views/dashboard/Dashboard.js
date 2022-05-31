@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
   CAvatar,
@@ -9,6 +9,8 @@ import {
   CCardFooter,
   CCardHeader,
   CCol,
+  CFormInput,
+  CFormLabel,
   CProgress,
   CRow,
   CTable,
@@ -22,7 +24,7 @@ import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
 import CIcon from '@coreui/icons-react'
 // excel to json converter
-import {ExcelToJson} from 'excel-to-json-in-react-js';
+import { ExcelToJson } from 'excel-to-json-in-react-js'
 
 import {
   cibCcAmex,
@@ -57,17 +59,15 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import { useDispatch, useSelector } from 'react-redux'
-import { startUpdateAttendance } from 'src/actions/attedance'
+import { startUpdateAttendance,getAttendance } from 'src/actions/attedance'
 
 const Dashboard = () => {
   const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
   const progressExample = [
-    { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
-    { title: 'Unique', value: '24.093 Users', percent: 20, color: 'info' },
-    { title: 'Pageviews', value: '78.706 Views', percent: 60, color: 'warning' },
-    { title: 'New Users', value: '22.123 Users', percent: 80, color: 'danger' },
-    { title: 'Bounce Rate', value: 'Average Rate', percent: 40.15, color: 'primary' },
+    { title: 'Asistencias', value: '29.703 Users', percent: 40, color: 'success' },
+    { title: 'Tardanzas', value: '78.706 Views', percent: 60, color: 'warning' },
+    { title: 'Faltas', value: '22.123 Users', percent: 80, color: 'danger' },
   ]
 
   const progressGroupExample1 = [
@@ -182,266 +182,184 @@ const Dashboard = () => {
       activity: 'Last week',
     },
   ]
-//   const formateData ={
-//     idEmployee:"",
-//     nameEmployee: "",
-//     timeAtendance:"",
-//     assignedArea: ""
-// }
+  //   const formateData ={
+  //     idEmployee:"",
+  //     nameEmployee: "",
+  //     timeAtendance:"",
+  //     assignedArea: ""
+  // }
 
-  const formateData ={
-    idEmployee:"",
-    nameEmployee: "",
-    timeAtendance:"",
-    assignedArea: ""
-}
+  // const formateData = {
+  //   idEmployee: '',
+  //   nameEmployee: '',
+  //   timeAtendance: '',
+  //   assignedArea: '',
+  // }
+  const initFile = {
+    file: '',
+  }
+  
 
 
-  const [JsonData,setJsonData]=useState("");
+  const [files, setFiles] = useState(initFile)
   const { attendanceUpdated } = useSelector((state) => state.attendance)
   const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getAttendance());
+  }, [ dispatch])
+  const [days, setDays] = useState(true)
 
-  const  updateData = ()=>{
-    if(!JsonData){
-      return console.log("datos vacios")
+  const handlerFile = (e) => {
+    let file = e.target.files[0]
+    setFiles({ ...files, file })
+
+    // if (!files.file) {
+    //   return console.log('datos vacios')
+    // }
+    // const arrayAttendance = JsonData.map((el) => {
+    //   return {
+    //     ...formateData,
+    //     idEmployee: el['ID de Usuario'],
+    //     nameEmployee: el.Nombre.replace(/\./g, ' '),
+    //     timeAtendance: el.Tiempo,
+    //     assignedArea: el['Nombre de la Terminal'],
+    //   }
+    // })
+    //dispatch(startUpdateAttendance(arrayAttendance))
+  }
+  const handlerUpload = () => {
+    if (!files.file) {
+      return console.log('datos vacios')
     }
-    const arrayAttendance=  JsonData.map(el => 
-      {
-        return{
-          ...formateData,
-          idEmployee:el['ID de Usuario'],
-          nameEmployee:el.Nombre.replace(/\./g," "),
-          timeAtendance:el.Tiempo,
-          assignedArea:el['Nombre de la Terminal']
-        }
-      }
-      )
-      dispatch(startUpdateAttendance(arrayAttendance))
-    }
+    dispatch(startUpdateAttendance(files))
+  }
   return (
     <>
-    {console.log(attendanceUpdated)}
-    <ExcelToJson
-    JsonDataSetter={setJsonData}
-    />
-    <CButton color="primary" onClick={updateData}>Actualizar</CButton>
-          <WidgetsDropdown />
+      {/* <ExcelToJson JsonDataSetter={setJsonData} /> */}
+      {/* {console.log(files)} */}
+      <div className="mb-4">
+        <CFormLabel htmlFor="formFile">{''}</CFormLabel>
+        <CButtonGroup className="float-end me-3">
+          <CFormInput className="mx-0" type="file" id="formFile" name="formFile" onChange={(e) => handlerFile(e)} />
+          <CButton color="primary" className="mx-0" onClick={handlerUpload}>
+            Actualizar
+          </CButton>
+        </CButtonGroup>
+      </div>
+
+      {attendanceUpdated && (
+        <WidgetsDropdown dataStadisticits={attendanceUpdated.dataAllStatistic} />
+      )}
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
             <CCol sm={5}>
               <h4 id="traffic" className="card-title mb-0">
-                Traffic
+                Grafico estadistico de asistencias ,tardanzas y empleados
               </h4>
-              <div className="small text-medium-emphasis">January - July 2021</div>
+              <div className="small text-medium-emphasis">
+                {attendanceUpdated && attendanceUpdated.dateUpdate}
+              </div>
             </CCol>
             <CCol sm={7} className="d-none d-md-block">
-              <CButton color="primary" className="float-end">
-                <CIcon icon={cilCloudDownload} />
-              </CButton>
               <CButtonGroup className="float-end me-3">
-                {['Day', 'Month', 'Year'].map((value) => (
-                  <CButton
-                    color="outline-secondary"
-                    key={value}
-                    className="mx-0"
-                    active={value === 'Month'}
-                  >
-                    {value}
-                  </CButton>
-                ))}
+                <CButton color="outline-secondary" className="mx-0" onClick={() => setDays(false)}>
+                  Info por Semana
+                </CButton>
+                <CButton
+                  color="outline-secondary"
+                  className="mx-0"
+                  active={days}
+                  onClick={() => setDays(true)}
+                >
+                  Info por Dias
+                </CButton>
               </CButtonGroup>
             </CCol>
           </CRow>
-          <CChartLine
-            style={{ height: '300px', marginTop: '40px' }}
-            data={{
-              labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-              datasets: [
-                {
-                  label: 'My First dataset',
-                  backgroundColor: hexToRgba(getStyle('--cui-info'), 10),
-                  borderColor: getStyle('--cui-info'),
-                  pointHoverBackgroundColor: getStyle('--cui-info'),
-                  borderWidth: 2,
-                  data: [
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                  ],
-                  fill: true,
-                },
-                {
-                  label: 'My Second dataset',
-                  backgroundColor: 'transparent',
-                  borderColor: getStyle('--cui-success'),
-                  pointHoverBackgroundColor: getStyle('--cui-success'),
-                  borderWidth: 2,
-                  data: [
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                    random(50, 200),
-                  ],
-                },
-                {
-                  label: 'My Third dataset',
-                  backgroundColor: 'transparent',
-                  borderColor: getStyle('--cui-danger'),
-                  pointHoverBackgroundColor: getStyle('--cui-danger'),
-                  borderWidth: 1,
-                  borderDash: [8, 5],
-                  data: [65, 65, 65, 65, 65, 65, 65],
-                },
-              ],
-            }}
-            options={{
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  display: false,
-                },
-              },
-              scales: {
-                x: {
-                  grid: {
-                    drawOnChartArea: false,
+          {attendanceUpdated && (
+            <CChartLine
+              style={{ height: '300px', marginTop: '40px' }}
+              data={{
+                labels: days
+                  ? attendanceUpdated.dateRegister.days
+                  : attendanceUpdated.dateRegister.week,
+                datasets: attendanceUpdated.dataAllStatistic.map((item) => {
+                  return {
+                    label: item.title,
+                    backgroundColor: hexToRgba(getStyle(`--cui-${item.color}`), 10),
+                    borderColor: getStyle(`--cui-${item.color}`),
+                    pointHoverBackgroundColor: getStyle(`--cui-${item.color}`),
+                    borderWidth: 2,
+                    data: days ? item.valuesXdays : item.valuesXweek,
+                    fill: true,
+                  }
+                }),
+              }}
+              options={{
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: false,
                   },
                 },
-                y: {
-                  ticks: {
-                    beginAtZero: true,
-                    maxTicksLimit: 5,
-                    stepSize: Math.ceil(250 / 5),
-                    max: 250,
+                scales: {
+                  x: {
+                    grid: {
+                      drawOnChartArea: false,
+                    },
+                  },
+                  y: {
+                    ticks: {
+                      beginAtZero: true,
+                      maxTicksLimit: 5,
+                      stepSize: Math.ceil(250 / 5),
+                      max: 250,
+                    },
                   },
                 },
-              },
-              elements: {
-                line: {
-                  tension: 0.4,
+                elements: {
+                  line: {
+                    tension: 0.4,
+                  },
+                  point: {
+                    radius: 0,
+                    hitRadius: 10,
+                    hoverRadius: 4,
+                    hoverBorderWidth: 3,
+                  },
                 },
-                point: {
-                  radius: 0,
-                  hitRadius: 10,
-                  hoverRadius: 4,
-                  hoverBorderWidth: 3,
-                },
-              },
-            }}
-          />
+              }}
+            />
+          )}
         </CCardBody>
         <CCardFooter>
-          <CRow xs={{ cols: 1 }} md={{ cols: 5 }} className="text-center">
-            {progressExample.map((item, index) => (
-              <CCol className="mb-sm-2 mb-0" key={index}>
-                <div className="text-medium-emphasis">{item.title}</div>
-                <strong>
-                  {item.value} ({item.percent}%)
-                </strong>
-                <CProgress thin className="mt-2" color={item.color} value={item.percent} />
-              </CCol>
-            ))}
+          <CRow xs={{ cols: 1 }} md={{ cols: 4 }} className="text-center">
+            {attendanceUpdated &&
+              attendanceUpdated.dataAllStatistic.map((item, index) => (
+                <CCol className="mb-sm-2 mb-0" key={index}>
+                  <div className="text-medium-emphasis">{`Promedio de ${item.title} ${
+                    days ? 'al Dia' : 'a la semana'
+                  }`}</div>
+                  <strong>
+                    {days
+                      ? Math.round(item.valueMonth / item.valuesXdays.length)
+                      : Math.round(item.valueWeek / item.valuesXweek.length)}
+                  </strong>
+                  <CProgress thin className="mt-2" color={item.color} value={item.percent} />
+                </CCol>
+              ))}
           </CRow>
         </CCardFooter>
       </CCard>
 
       {/* <WidgetsBrand withCharts /> */}
-{/* grafico de asistencias y tardanzas */}
+      {/* grafico de asistencias y tardanzas */}
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Traffic {' & '} Sales</CCardHeader>
+            <CCardHeader>Registros de los empleados</CCardHeader>
             <CCardBody>
-              <CRow>
-                <CCol xs={12} md={6} xl={6}>
-                  <CRow>
-                    <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-info py-1 px-3">
-                        <div className="text-medium-emphasis small">New Clients</div>
-                        <div className="fs-5 fw-semibold">9,123</div>
-                      </div>
-                    </CCol>
-                    <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">Recurring Clients</div>
-                        <div className="fs-5 fw-semibold">22,643</div>
-                      </div>
-                    </CCol>
-                  </CRow>
-
-                  <hr className="mt-0" />
-                  {progressGroupExample1.map((item, index) => (
-                    <div className="progress-group mb-4" key={index}>
-                      <div className="progress-group-prepend">
-                        <span className="text-medium-emphasis small">{item.title}</span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <CProgress thin color="info" value={item.value1} />
-                        <CProgress thin color="danger" value={item.value2} />
-                      </div>
-                    </div>
-                  ))}
-                </CCol>
-
-                <CCol xs={12} md={6} xl={6}>
-                  <CRow>
-                    <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">Pageviews</div>
-                        <div className="fs-5 fw-semibold">78,623</div>
-                      </div>
-                    </CCol>
-                    <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">Organic</div>
-                        <div className="fs-5 fw-semibold">49,123</div>
-                      </div>
-                    </CCol>
-                  </CRow>
-
-                  <hr className="mt-0" />
-
-                  {progressGroupExample2.map((item, index) => (
-                    <div className="progress-group mb-4" key={index}>
-                      <div className="progress-group-header">
-                        <CIcon className="me-2" icon={item.icon} size="lg" />
-                        <span>{item.title}</span>
-                        <span className="ms-auto fw-semibold">{item.value}%</span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <CProgress thin color="warning" value={item.value} />
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="mb-5"></div>
-
-                  {progressGroupExample3.map((item, index) => (
-                    <div className="progress-group" key={index}>
-                      <div className="progress-group-header">
-                        <CIcon className="me-2" icon={item.icon} size="lg" />
-                        <span>{item.title}</span>
-                        <span className="ms-auto fw-semibold">
-                          {item.value}{' '}
-                          <span className="text-medium-emphasis small">({item.percent}%)</span>
-                        </span>
-                      </div>
-                      <div className="progress-group-bars">
-                        <CProgress thin color="success" value={item.percent} />
-                      </div>
-                    </div>
-                  ))}
-                </CCol>
-              </CRow>
-
               <br />
 
               <CTable align="middle" className="mb-0 border" hover responsive>
@@ -450,49 +368,137 @@ const Dashboard = () => {
                     <CTableHeaderCell className="text-center">
                       <CIcon icon={cilPeople} />
                     </CTableHeaderCell>
-                    <CTableHeaderCell>User</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Country</CTableHeaderCell>
-                    <CTableHeaderCell>Usage</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Payment Method</CTableHeaderCell>
-                    <CTableHeaderCell>Activity</CTableHeaderCell>
+                    <CTableHeaderCell>Empleados</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Asistencias</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Tardanzas</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Ausencias</CTableHeaderCell>
+                    <CTableHeaderCell>% Asistencias</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">% Tardanzas</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">% Ausencias</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {tableExample.map((item, index) => (
-                    <CTableRow v-for="item in tableItems" key={index}>
-                      <CTableDataCell className="text-center">
-                        <CAvatar size="md" src={item.avatar.src} status={item.avatar.status} />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div>{item.user.name}</div>
-                        <div className="small text-medium-emphasis">
-                          <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
-                          {item.user.registered}
-                        </div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.country.flag} title={item.country.name} />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            <strong>{item.usage.value}%</strong>
+                  {attendanceUpdated &&
+                    attendanceUpdated.dataAttendance.map((item, index) => (
+                      <CTableRow v-for="item in tableItems" key={index}>
+                        <CTableDataCell className="text-center">
+                          <CAvatar size="md" src={avatar1} status="success" />
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div>{item.nameEmployee}</div>
+                        </CTableDataCell>
+                        <CTableDataCell className="text-center">
+                          <div>{item.assitance}</div>
+                        </CTableDataCell>
+                        <CTableDataCell className="text-center">
+                          <div>{item.tardies}</div>
+                        </CTableDataCell>
+                        <CTableDataCell className="text-center">
+                          <div>{item.absences}</div>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div className="clearfix">
+                            <div className="float-start">
+                              <strong>
+                                {Math.round(
+                                  (item.assitance /
+                                    (item.assitance + item.tardies + item.absences)) *
+                                    100,
+                                )}
+                                %
+                              </strong>
+                            </div>
+                            <div className="float-end">
+                              <small className="text-medium-emphasis">
+                                Jun 11, 2021 - Jul 10, 2021
+                              </small>
+                            </div>
                           </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">{item.usage.period}</small>
+                          <CProgress
+                            thin
+                            color={
+                              Math.round(
+                                (item.assitance / (item.assitance + item.tardies + item.absences)) *
+                                  100,
+                              ) > 60
+                                ? 'success'
+                                : 'warning'
+                            }
+                            value={Math.round(
+                              (item.assitance / (item.assitance + item.tardies + item.absences)) *
+                                100,
+                            )}
+                          />
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div className="clearfix">
+                            <div className="float-start">
+                              <strong>
+                                {Math.round(
+                                  (item.tardies / (item.assitance + item.tardies + item.absences)) *
+                                    100,
+                                )}
+                                %
+                              </strong>
+                            </div>
+                            <div className="float-end">
+                              <small className="text-medium-emphasis">
+                                Jun 11, 2021 - Jul 10, 2021
+                              </small>
+                            </div>
                           </div>
-                        </div>
-                        <CProgress thin color={item.usage.color} value={item.usage.value} />
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <CIcon size="xl" icon={item.payment.icon} />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="small text-medium-emphasis">Last login</div>
-                        <strong>{item.activity}</strong>
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
+                          <CProgress
+                            thin
+                            color={
+                              Math.round(
+                                (item.tardies / (item.assitance + item.tardies + item.absences)) *
+                                  100,
+                              ) < 30
+                                ? 'warning'
+                                : 'danger'
+                            }
+                            value={Math.round(
+                              (item.tardies / (item.assitance + item.tardies + item.absences)) *
+                                100,
+                            )}
+                          />
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div className="clearfix">
+                            <div className="float-start">
+                              <strong>
+                                {Math.round(
+                                  (item.absences /
+                                    (item.assitance + item.tardies + item.absences)) *
+                                    100,
+                                )}
+                                %
+                              </strong>
+                            </div>
+                            <div className="float-end">
+                              <small className="text-medium-emphasis">
+                                Jun 11, 2021 - Jul 10, 2021
+                              </small>
+                            </div>
+                          </div>
+                          <CProgress
+                            thin
+                            color={
+                              Math.round(
+                                (item.absences / (item.assitance + item.tardies + item.absences)) *
+                                  100,
+                              ) < 30
+                                ? 'success'
+                                : 'danger'
+                            }
+                            value={Math.round(
+                              (item.absences / (item.assitance + item.tardies + item.absences)) *
+                                100,
+                            )}
+                          />
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))}
                 </CTableBody>
               </CTable>
             </CCardBody>

@@ -40,6 +40,7 @@
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-app-polyfill": "^3.0.0",
+    "react-datetime-picker": "^3.5.0",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.2",

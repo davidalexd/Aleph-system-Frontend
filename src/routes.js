@@ -3,6 +3,9 @@ import React from 'react'
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
+//listado de permisos y permisos 
+const permisos = React.lazy(() => import('./views/permisos/formulario/formPermiso'))
+const listadoPermisos = React.lazy(() => import('./views/permisos/tablas/listadoPermisos'))
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -56,6 +59,8 @@ const routes = [
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
+  { path: '/theme/formpermises', name: 'Formulario de Permisos', element: permisos },
+  { path: '/theme/myrequest', name: 'Listado de Permisos', element: listadoPermisos },
   { path: '/base', name: 'Base', element: Cards, exact: true },
   { path: '/base/accordion', name: 'Accordion', element: Accordion },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },
