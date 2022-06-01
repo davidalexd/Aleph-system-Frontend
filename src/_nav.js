@@ -4,8 +4,10 @@ import {
   cilBell,
   cilCalculator,
   cilChartPie,
+  cilClock,
   cilCursor,
   cilDrop,
+  cilFindInPage,
   cilNotes,
   cilPencil,
   cilPuzzle,
@@ -44,6 +46,12 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'Solicitudes de usuarios',
+    to: '/theme/usersrequest',
+    icon: <CIcon icon={cilFindInPage} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: 'Mis solicitudes',
     to: '/theme/myrequest',
     icon: <CIcon icon={cilTask} customClassName="nav-icon" />,
@@ -53,6 +61,12 @@ const _nav = [
     name: 'Formulario de permisos',
     to: '/theme/formpermises',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Mis Asistencias',
+    to: '/theme/myattendances',
+    icon: <CIcon icon={cilClock} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,

@@ -2,17 +2,18 @@ import React from 'react'
 import {
   CRow,
   CCol,
-  CDropdown,
-  CDropdownMenu,
-  CDropdownItem,
-  CDropdownToggle,
   CWidgetStatsA,
 } from '@coreui/react'
-import { getStyle } from '@coreui/utils'
-import { CChartBar, CChartLine } from '@coreui/react-chartjs'
-import CIcon from '@coreui/icons-react'
-import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 
+import CIcon from '@coreui/icons-react'
+import { cilAlarm, cilArrowBottom, cilClock, cilDescription, cilWarning } from '@coreui/icons'
+const typeIcon={
+  Asistencias:cilClock,
+  Tardanzas:cilAlarm,
+  Faltas:cilWarning,
+  Permisos:cilDescription,
+
+}
 const WidgetsDropdown = ({dataStadisticits}) => {
   return (
     <CRow>
@@ -33,63 +34,7 @@ const WidgetsDropdown = ({dataStadisticits}) => {
                 }
                 title={`${item.title} al mes`}
                 chart={
-                  <CChartLine
-                    className="mt-3 mx-3"
-                    style={{ height: '70px' }}
-                    data={{
-                      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                      datasets: [
-                        {
-                          label: 'My First dataset',
-                          backgroundColor: 'transparent',
-                          borderColor: 'rgba(0,0,0,.55)',
-                          pointBackgroundColor: getStyle('--cui-secondary color'),
-                          data: [65, 59, 84, 84, 51, 55, 40],
-                        },
-                      ],
-                    }}
-                    options={{
-                      plugins: {
-                        legend: {
-                          display: false,
-                        },
-                      },
-                      maintainAspectRatio: false,
-                      scales: {
-                        x: {
-                          grid: {
-                            display: false,
-                            drawBorder: false,
-                          },
-                          ticks: {
-                            display: false,
-                          },
-                        },
-                        y: {
-                          min: 30,
-                          max: 89,
-                          display: false,
-                          grid: {
-                            display: false,
-                          },
-                          ticks: {
-                            display: false,
-                          },
-                        },
-                      },
-                      elements: {
-                        line: {
-                          borderWidth: 1,
-                          tension: 0.4,
-                        },
-                        point: {
-                          radius: 4,
-                          hitRadius: 10,
-                          hoverRadius: 4,
-                        },
-                      },
-                    }}
-                  />
+                  <CIcon className="mt-3 mx-3 pb-2" icon={typeIcon[item.title]} size="8xl" ></CIcon>
                 }
               />{' '}
             </CCol>

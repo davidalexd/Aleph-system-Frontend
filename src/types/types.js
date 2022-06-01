@@ -3,6 +3,8 @@ export const types = {
   uiRemoveError: '[UI] Remove Error',
   uiStartLoading: '[UI] Start loading',
   uiFinishLoading: '[UI] Finish loading',
+  uiOpenModal:'[ui] Open modal',
+  uiCloseModal:'[ui] Close modal',
   
   authChecking:'[auth] Checking login state',
   authCheckingFinish:'[auth] Finish checking login state',

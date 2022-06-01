@@ -17,7 +17,7 @@ const typePermise = {
   3: 'HORAS EXTRAS',
   4: 'COMPENSACIÓN DE HORAS',
 }
-const formPermiso = () => {
+const PermissionForm = () => {
   const [checkAutorization, setCheckAuthorization] = useState('1')
   const handleCheckAuthorization = (e) => {
     const { target } = e
@@ -321,4 +321,4 @@ const formPermiso = () => {
     </CForm>
   )
 }
-export default formPermiso
+export default PermissionForm
