@@ -51,11 +51,11 @@ const AttendanceList = () => {
               <CCardBody>
                 <CChartDoughnut
                   data={{
-                    labels: ['ener', 'felbrer'],
+                    labels: ['Asistencia', 'Tardanza','Faltas'],
                     datasets: [
                       {
                         backgroundColor: ['#2eb85c', '#f9b115', '#e55353', '#3399ff'],
-                        data: [1, 2, 3],
+                        data: [25, 3, 2],
                       },
                     ],
                   }}
@@ -116,7 +116,7 @@ const AttendanceList = () => {
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell scope="row">3</CTableHeaderCell>
-                      <CTableDataCell>16</CTableDataCell>
+                      <CTableDataCell>17</CTableDataCell>
                       <CTableDataCell>Marzo</CTableDataCell>
                       <CTableDataCell>7:00AM</CTableDataCell>
                       <CTableDataCell>Salida</CTableDataCell>
@@ -128,7 +128,7 @@ const AttendanceList = () => {
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell scope="row">4</CTableHeaderCell>
-                      <CTableDataCell>16</CTableDataCell>
+                      <CTableDataCell>17</CTableDataCell>
                       <CTableDataCell>Marzo</CTableDataCell>
                       <CTableDataCell>7:00AM</CTableDataCell>
                       <CTableDataCell>Salida</CTableDataCell>
@@ -140,7 +140,7 @@ const AttendanceList = () => {
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell scope="row">5</CTableHeaderCell>
-                      <CTableDataCell>16</CTableDataCell>
+                      <CTableDataCell>18</CTableDataCell>
                       <CTableDataCell>Marzo</CTableDataCell>
                       <CTableDataCell>7:00AM</CTableDataCell>
                       <CTableDataCell>Entrada</CTableDataCell>
@@ -152,7 +152,7 @@ const AttendanceList = () => {
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                      <CTableDataCell>16</CTableDataCell>
+                      <CTableDataCell>18</CTableDataCell>
                       <CTableDataCell>Marzo</CTableDataCell>
                       <CTableDataCell>7:00AM</CTableDataCell>
                       <CTableDataCell>Salida</CTableDataCell>
@@ -164,7 +164,7 @@ const AttendanceList = () => {
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                      <CTableDataCell>16</CTableDataCell>
+                      <CTableDataCell>19</CTableDataCell>
                       <CTableDataCell>Marzo</CTableDataCell>
                       <CTableDataCell>7:00AM</CTableDataCell>
                       <CTableDataCell>Salida</CTableDataCell>
@@ -176,7 +176,7 @@ const AttendanceList = () => {
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                      <CTableDataCell>16</CTableDataCell>
+                      <CTableDataCell>19</CTableDataCell>
                       <CTableDataCell>Marzo</CTableDataCell>
                       <CTableDataCell>7:00AM</CTableDataCell>
                       <CTableDataCell>Salida</CTableDataCell>
@@ -188,7 +188,7 @@ const AttendanceList = () => {
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                      <CTableDataCell>16</CTableDataCell>
+                      <CTableDataCell>20</CTableDataCell>
                       <CTableDataCell>Marzo</CTableDataCell>
                       <CTableDataCell>7:00AM</CTableDataCell>
                       <CTableDataCell>Salida</CTableDataCell>
@@ -200,7 +200,7 @@ const AttendanceList = () => {
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                      <CTableDataCell>16</CTableDataCell>
+                      <CTableDataCell>20</CTableDataCell>
                       <CTableDataCell>Marzo</CTableDataCell>
                       <CTableDataCell>7:00AM</CTableDataCell>
                       <CTableDataCell>Salida</CTableDataCell>
@@ -212,7 +212,7 @@ const AttendanceList = () => {
                     </CTableRow>
                     <CTableRow>
                       <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                      <CTableDataCell>16</CTableDataCell>
+                      <CTableDataCell>21</CTableDataCell>
                       <CTableDataCell>Marzo</CTableDataCell>
                       <CTableDataCell>7:00AM</CTableDataCell>
                       <CTableDataCell>Salida</CTableDataCell>

@@ -59,15 +59,13 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/theme', name: 'Theme', element: Colors, exact: true },
-  { path: '/theme/colors', name: 'Colors', element: Colors },
-  { path: '/theme/typography', name: 'Typography', element: Typography },
+  { path: '/manage', name: 'Administrar', element: Colors, exact: true },
   //permisos
-  { path: '/theme/formpermises', name: 'Formulario de Permisos', element: permisos },
-  { path: '/theme/usersrequest', name: 'Listado General de Permisos' , element: listadoPermisosUsuarios },
-  { path: '/theme/myrequest', name: 'Listado de mis Permisos', element: listadoPermisos },
+  { path: '/manage/formpermises', name: 'Formulario de Permisos', element: permisos },
+  { path: '/manage/usersrequest', name: 'Listado General de Permisos' , element: listadoPermisosUsuarios },
+  { path: '/manage/myrequest', name: 'Listado de mis Permisos', element: listadoPermisos },
   //asistencias
-  { path: '/theme/myattendances', name: 'Listado de mis Asistencias', element: asistencias },
+  { path: '/manage/myattendances', name: 'Listado de mis Asistencias', element: asistencias },
   { path: '/base', name: 'Base', element: Cards, exact: true },
   { path: '/base/accordion', name: 'Accordion', element: Accordion },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },

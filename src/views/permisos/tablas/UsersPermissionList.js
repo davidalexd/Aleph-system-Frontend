@@ -17,11 +17,18 @@ import {
   CTableRow,
 } from '@coreui/react'
 import PermissionModalAdministator from './PermissionModalAdministator'
-import { useDispatch } from 'react-redux';
-import { uiOpenModal } from 'src/actions/ui';
+import { useDispatch } from 'react-redux'
+import { uiOpenModal } from 'src/actions/ui'
+const colorStates = {
+  aceptado: 'success',
+  rechazado: 'danger',
+  revisando: 'info',
+}
 const UsersPermissionList = () => {
-    const dispatch = useDispatch();
-  const handleClickInfoPermisse = () => {  dispatch(uiOpenModal());}
+  const dispatch = useDispatch()
+  const handleClickInfoPermisse = () => {
+    dispatch(uiOpenModal())
+  }
   return (
     <CRow>
       <CCol xs>
@@ -53,124 +60,117 @@ const UsersPermissionList = () => {
                   <CTableHeaderCell scope="col">Nombre del trabajador</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Tipo de permiso</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Fecha de solicitud</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Revisado ultima ves el</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Ultima actualizacion</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Detalles</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Estado</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                <CTableRow>
-                  <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                  <CTableDataCell>Juan torres sandoval</CTableDataCell>
-                  <CTableDataCell>Permiso personal</CTableDataCell>
-                  <CTableDataCell>17/03/2022</CTableDataCell>
-                  <CTableDataCell>17/03/2022</CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color="primary" variant="outline" onClick={handleClickInfoPermisse}>
-                      Ver detalles
-                    </CButton>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="success" shape="rounded-pill">
-                      Aceptado
-                    </CBadge>
-                  </CTableDataCell>
-                </CTableRow>
-                <CTableRow>
-                  <CTableHeaderCell scope="row">2</CTableHeaderCell>
-                  <CTableDataCell>Juan torres sandoval</CTableDataCell>
-                  <CTableDataCell>Permiso personal</CTableDataCell>
-                  <CTableDataCell>17/03/2022</CTableDataCell>
-                  <CTableDataCell>17/03/2022</CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color="primary" variant="outline" onClick={handleClickInfoPermisse}>
-                      Ver detalles
-                    </CButton>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="danger" shape="rounded-pill">
-                      Denegado
-                    </CBadge>
-                  </CTableDataCell>
-                </CTableRow>
-                <CTableRow>
-                  <CTableHeaderCell scope="row">3</CTableHeaderCell>
-                  <CTableDataCell>Juan torres sandoval</CTableDataCell>
-                  <CTableDataCell>Permiso personal</CTableDataCell>
-                  <CTableDataCell>17/03/2022</CTableDataCell>
-                  <CTableDataCell>17/03/2022</CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color="primary" variant="outline" onClick={handleClickInfoPermisse}>
-                      Ver detalles
-                    </CButton>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="warning" shape="rounded-pill">
-                      warning
-                    </CBadge>
-                  </CTableDataCell>
-                </CTableRow>
-                <CTableRow>
-                  <CTableHeaderCell scope="row">4</CTableHeaderCell>
-                  <CTableDataCell>Juan torres sandoval</CTableDataCell>
-                  <CTableDataCell>Permiso personal</CTableDataCell>
-                  <CTableDataCell>17/03/2022</CTableDataCell>
-                  <CTableDataCell>17/03/2022</CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color="primary" variant="outline" onClick={handleClickInfoPermisse}>
-                      Ver detalles
-                    </CButton>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="success" shape="rounded-pill">
-                      primary
-                    </CBadge>
-                  </CTableDataCell>
-                </CTableRow>
-                <CTableRow>
-                  <CTableHeaderCell scope="row">5</CTableHeaderCell>
-                  <CTableDataCell>Juan torres sandoval</CTableDataCell>
-                  <CTableDataCell>Permiso personal</CTableDataCell>
-                  <CTableDataCell>17/03/2022</CTableDataCell>
-                  <CTableDataCell>17/03/2022</CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color="primary" variant="outline">
-                      Ver detalles
-                    </CButton>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="info" shape="rounded-pill">
-                      En revision
-                    </CBadge>
-                  </CTableDataCell>
-                </CTableRow>
-                <CTableRow>
-                  <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                  <CTableDataCell>Juan torres sandoval</CTableDataCell>
-                  <CTableDataCell>Permiso personal</CTableDataCell>
-                  <CTableDataCell>17/03/2022</CTableDataCell>
-                  <CTableDataCell>17/03/2022</CTableDataCell>
-                  <CTableDataCell>
-                    <CButton color="primary" variant="outline">
-                      Ver detalles
-                    </CButton>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    <CBadge color="success" shape="rounded-pill">
-                      primary
-                    </CBadge>
-                  </CTableDataCell>
-                </CTableRow>
+                {[
+                  {
+                    nameEmployee: 'Juan Carlos Torres',
+                    typePermission: 'Permiso personal',
+                    creationDate: '10-01-2022',
+                    updateState: '12-02-2022',
+                    state: 'revisando',
+                  },
+                  {
+                    nameEmployee: 'Rolando Paucar',
+                    typePermission: 'Autorizacion para trabajo en campo',
+                    creationDate: '10-01-2022',
+                    updateState: '12-02-2022',
+                    state: 'aceptado',
+                  },
+                  {
+                    nameEmployee: 'fernando parreño',
+                    typePermission: 'Horas extra',
+                    creationDate: '9-01-2022',
+                    updateState: '13-02-2022',
+                    state: 'rechazado',
+                  },
+
+                  ,
+                  {
+                    nameEmployee: 'grover cornejo',
+                    typePermission: 'Compesación de horas',
+                    creationDate: '12-01-2022',
+                    updateState: '13-02-2022',
+                    state: 'aceptado',
+                  },
+
+                  {
+                    nameEmployee: 'alexandra paucar',
+                    typePermission: 'Permiso personal',
+                    creationDate: '16-01-2022',
+                    updateState: '20-02-2022',
+                    state: 'rechazado',
+                  },
+
+                  {
+                    nameEmployee: 'eda paucar',
+                    typePermission: 'Autorizacion para trabajo en campo',
+                    creationDate: '10-01-2022',
+                    updateState: '21-02-2022',
+                    state: 'aceptado',
+                  },
+
+                  {
+                    nameEmployee: 'cesar cadillo',
+                    typePermission: 'Horas extra',
+                    creationDate: '17-01-2022',
+                    updateState: '21-02-2022',
+                    state: 'revisando',
+                  },
+
+                  {
+                    nameEmployee: 'Juan Carlos Torres',
+                    typePermission: 'Compesación de horas',
+                    creationDate: '19-01-2022',
+                    updateState: '22-02-2022',
+                    state: 'aceptado',
+                  },
+
+                  {
+                    nameEmployee: 'yon gonzales',
+                    typePermission: 'Permiso personal',
+                    creationDate: '22-01-2022',
+                    updateState: '30-02-2022',
+                    state: 'aceptado',
+                  },
+
+                  {
+                    nameEmployee: 'Carlos martinez',
+                    typePermission: 'Autorizacion para trabajo en campo',
+                    creationDate: '15-01-2022',
+                    updateState: '26-02-2022',
+                    state: 'rechazado',
+                  },
+                ].map((el, index) => (
+                  <CTableRow key={index}>
+                    <CTableHeaderCell scope="row">{index}</CTableHeaderCell>
+                    <CTableDataCell>{el.nameEmployee}</CTableDataCell>
+                    <CTableDataCell>{el.typePermission}</CTableDataCell>
+                    <CTableDataCell>{el.creationDate}</CTableDataCell>
+                    <CTableDataCell>{el.updateState}</CTableDataCell>
+                    <CTableDataCell>
+                      <CButton color="primary" variant="outline" onClick={handleClickInfoPermisse}>
+                        Ver detalles
+                      </CButton>
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <CBadge color={colorStates[el.state]} shape="rounded-pill">
+                        {el.state}
+                      </CBadge>
+                    </CTableDataCell>
+                  </CTableRow>
+                ))}
               </CTableBody>
             </CTable>
           </CCardBody>
         </CCard>
       </CCol>
-      <PermissionModalAdministator/>
+      <PermissionModalAdministator />
     </CRow>
-  
-
-    
   )
 }
 

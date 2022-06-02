@@ -1,19 +1,25 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 import {
+  cilArrowThickBottom,
   cilBell,
   cilCalculator,
+  cilCalendar,
   cilChartPie,
   cilClock,
+  cilContact,
   cilCursor,
   cilDrop,
   cilFindInPage,
   cilNotes,
   cilPencil,
   cilPuzzle,
+  cilSettings,
   cilSpeedometer,
   cilStar,
   cilTask,
+  cilUser,
+  cilWallet,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -23,60 +29,44 @@ const _nav = [
     name: 'Dashboard',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    },
   },
   {
     component: CNavTitle,
-    name: 'Theme',
-  },
-  {
-    component: CNavItem,
-    name: 'Colors',
-    to: '/theme/colors',
-    icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
-  },
-  {
-    component: CNavItem,
-    name: 'Typography',
-    to: '/theme/typography',
-    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    name: 'Gestionar',
   },
   {
     component: CNavItem,
     name: 'Solicitudes de usuarios',
-    to: '/theme/usersrequest',
+    to: '/manage/usersrequest',
     icon: <CIcon icon={cilFindInPage} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Mis solicitudes',
-    to: '/theme/myrequest',
+    to: '/manage/myrequest',
     icon: <CIcon icon={cilTask} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Formulario de permisos',
-    to: '/theme/formpermises',
+    to: '/manage/formpermises',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Mis Asistencias',
-    to: '/theme/myattendances',
+    to: '/manage/myattendances',
     icon: <CIcon icon={cilClock} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,
-    name: 'Components',
+    name: 'Configuraciones',
   },
   {
     component: CNavGroup,
-    name: 'Base',
+    name: 'Mi perfil',
     to: '/base',
-    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilContact} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
@@ -152,9 +142,9 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Buttons',
+    name: 'Configuraciones',
     to: '/buttons',
-    icon: <CIcon icon={cilCursor} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
@@ -175,8 +165,8 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Forms',
-    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    name: 'Calendario',
+    icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
@@ -222,14 +212,14 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Charts',
+    name: 'Nomina de sueldo',
     to: '/charts',
-    icon: <CIcon icon={cilChartPie} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilWallet} customClassName="nav-icon" />,
   },
   {
     component: CNavGroup,
-    name: 'Icons',
-    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
+    name: 'Exportar datos',
+    icon: <CIcon icon={cilArrowThickBottom} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
@@ -254,7 +244,7 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Notifications',
+    name: 'Notificaciones',
     icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
     items: [
       {
@@ -281,45 +271,41 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Widgets',
+    name: 'Tareas o eventos',
     to: '/widgets',
     icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    },
   },
-  {
-    component: CNavTitle,
-    name: 'Extras',
-  },
-  {
-    component: CNavGroup,
-    name: 'Pages',
-    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Login',
-        to: '/login',
-      },
-      {
-        component: CNavItem,
-        name: 'Register',
-        to: '/register',
-      },
-      {
-        component: CNavItem,
-        name: 'Error 404',
-        to: '/404',
-      },
-      {
-        component: CNavItem,
-        name: 'Error 500',
-        to: '/500',
-      },
-    ],
-  },
-]
 
+]
 export default _nav
+// {
+//   component: CNavTitle,
+//   name: 'Logout',
+// },
+// {
+//   component: CNavGroup,
+//   name: 'Pages',
+//   icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
+//   items: [
+//     {
+//       component: CNavItem,
+//       name: 'Login',
+//       to: '/login',
+//     },
+//     {
+//       component: CNavItem,
+//       name: 'Register',
+//       to: '/register',
+//     },
+//     {
+//       component: CNavItem,
+//       name: 'Error 404',
+//       to: '/404',
+//     },
+//     {
+//       component: CNavItem,
+//       name: 'Error 500',
+//       to: '/500',
+//     },
+//   ],
+// },

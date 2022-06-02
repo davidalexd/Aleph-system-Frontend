@@ -20,9 +20,15 @@ import { useDispatch } from 'react-redux'
 import PermissionModalUser from './PermissionModalUser'
 import { uiOpenModal } from 'src/actions/ui'
 const PermissionList = () => {
-  const dispatch = useDispatch();
-  const handleClickInfoPermisse=()=>{
-      dispatch(uiOpenModal());
+  const dispatch = useDispatch()
+  const handleClickInfoPermisse = () => {
+    dispatch(uiOpenModal())
+  }
+
+  const colorStates = {
+    aceptado: 'success',
+    rechazado: 'danger',
+    revisando: 'info',
   }
   return (
     <>
@@ -31,7 +37,7 @@ const PermissionList = () => {
           <CCard className="mb-4">
             <CCardHeader>
               <h4 id="traffic" className="card-title mb-0">
-                Registro de mis solicitudes o autorizaciones
+                Seguimiento de mis solicitudes o autorizaciones
               </h4>
             </CCardHeader>
             <CCardBody>
@@ -60,96 +66,50 @@ const PermissionList = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                    <CTableDataCell>Permiso personal</CTableDataCell>
-                    <CTableDataCell>17/03/2022</CTableDataCell>
-                    <CTableDataCell>
-                    <CButton color="primary" variant="outline" onClick={handleClickInfoPermisse}>
-                        Ver detalles
-                      </CButton>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CBadge color="success" shape="rounded-pill">
-                        Aceptado
-                      </CBadge>
-                    </CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">2</CTableHeaderCell>
-                    <CTableDataCell>Permiso personal</CTableDataCell>
-                    <CTableDataCell>17/03/2022</CTableDataCell>
-                    <CTableDataCell>
-                    <CButton color="primary" variant="outline" onClick={handleClickInfoPermisse}>
-                        Ver detalles
-                      </CButton>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CBadge color="danger" shape="rounded-pill">
-                        Denegado
-                      </CBadge>
-                    </CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">3</CTableHeaderCell>
-                    <CTableDataCell>Permiso personal</CTableDataCell>
-                    <CTableDataCell>17/03/2022</CTableDataCell>
-                    <CTableDataCell>
-                    <CButton color="primary" variant="outline" onClick={handleClickInfoPermisse}>
-                        Ver detalles
-                      </CButton>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CBadge color="warning" shape="rounded-pill">
-                        warning
-                      </CBadge>
-                    </CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">4</CTableHeaderCell>
-                    <CTableDataCell>Permiso personal</CTableDataCell>
-                    <CTableDataCell>17/03/2022</CTableDataCell>
-                    <CTableDataCell>
-                      <CButton color="primary" variant="outline" onClick={handleClickInfoPermisse}>
-                        Ver detalles
-                      </CButton>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CBadge color="success" shape="rounded-pill">
-                        primary
-                      </CBadge>
-                    </CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">5</CTableHeaderCell>
-                    <CTableDataCell>Permiso personal</CTableDataCell>
-                    <CTableDataCell>17/03/2022</CTableDataCell>
-                    <CTableDataCell>
-                      <CButton color="primary" variant="outline">
-                        Ver detalles
-                      </CButton>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CBadge color="info" shape="rounded-pill">
-                        En revision
-                      </CBadge>
-                    </CTableDataCell>
-                  </CTableRow>
-                  <CTableRow>
-                    <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                    <CTableDataCell>Permiso personal</CTableDataCell>
-                    <CTableDataCell>17/03/2022</CTableDataCell>
-                    <CTableDataCell>
-                      <CButton color="primary" variant="outline">
-                        Ver detalles
-                      </CButton>
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CBadge color="success" shape="rounded-pill">
-                        primary
-                      </CBadge>
-                    </CTableDataCell>
-                  </CTableRow>
+                  {[
+                    { typePermisse: 'Permiso personal', dateDay: '17/03/2022', state: 'aceptado' },
+                    { typePermisse: 'Permiso personal', dateDay: '17/03/2022', state: 'aceptado' },
+                    { typePermisse: 'Permiso personal', dateDay: '18/03/2022', state: 'rechazado' },
+                    { typePermisse: 'Permiso personal', dateDay: '18/03/2022', state: 'revisando' },
+                    { typePermisse: 'Horas extra', dateDay: '17/03/2022', state: 'aceptado' },
+                    { typePermisse: 'Horas extra', dateDay: '18/03/2022', state: 'rechazado' },
+                    { typePermisse: 'Horas extra', dateDay: '18/03/2022', state: 'rechazado' },
+                    {
+                      typePermisse: 'Compesación de horas',
+                      dateDay: '17/03/2022',
+                      state: 'aceptado',
+                    },
+                    {
+                      typePermisse: 'Compesación de horas',
+                      dateDay: '18/03/2022',
+                      state: 'rechazado',
+                    },
+                    {
+                      typePermisse: 'Compesación de horas',
+                      dateDay: '18/03/2022',
+                      state: 'aceptado',
+                    },
+                  ].map((el, index) => (
+                    <CTableRow key={index}>
+                      <CTableHeaderCell scope="row">{index}</CTableHeaderCell>
+                      <CTableDataCell>{el.typePermisse}</CTableDataCell>
+                      <CTableDataCell>{el.dateDay}</CTableDataCell>
+                      <CTableDataCell>
+                        <CButton
+                          color="primary"
+                          variant="outline"
+                          onClick={handleClickInfoPermisse}
+                        >
+                          Ver detalles
+                        </CButton>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <CBadge color={colorStates[el.state]} shape="rounded-pill">
+                          {el.state}
+                        </CBadge>
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))}
                 </CTableBody>
               </CTable>
             </CCardBody>
