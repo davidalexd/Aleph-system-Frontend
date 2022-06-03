@@ -182,77 +182,21 @@ const Dashboard = () => {
       activity: 'Last week',
     },
   ]
-  //   const formateData ={
-  //     idEmployee:"",
-  //     nameEmployee: "",
-  //     timeAtendance:"",
-  //     assignedArea: ""
-  // }
-
-  // const formateData = {
-  //   idEmployee: '',
-  //   nameEmployee: '',
-  //   timeAtendance: '',
-  //   assignedArea: '',
-  // }
-  const initFile = {
-    file: '',
+  const colorStatus = {
+    Asistencias: 'success',
+    Tardanzas: 'warning',
+    Faltas: 'danger',
   }
 
-  const [files, setFiles] = useState(initFile)
   const { attendanceUpdated } = useSelector((state) => state.attendance)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getAttendance())
   }, [dispatch])
   const [graphic, setGraphic] = useState(true)
-
-  const handlerFile = (e) => {
-    let file = e.target.files[0]
-    setFiles({ ...files, file })
-
-    // if (!files.file) {
-    //   return console.log('datos vacios')
-    // }
-    // const arrayAttendance = JsonData.map((el) => {
-    //   return {
-    //     ...formateData,
-    //     idEmployee: el['ID de Usuario'],
-    //     nameEmployee: el.Nombre.replace(/\./g, ' '),
-    //     timeAtendance: el.Tiempo,
-    //     assignedArea: el['Nombre de la Terminal'],
-    //   }
-    // })
-    //dispatch(startUpdateAttendance(arrayAttendance))
-  }
-  const handlerUpload = () => {
-    if (!files.file) {
-      return console.log('datos vacios')
-    }
-    dispatch(startUpdateAttendance(files))
-  }
   return (
     <>
-      {/* <ExcelToJson JsonDataSetter={setJsonData} /> */}
-      {/* {console.log(files)} */}
-      <div className="mb-4">
-        <CFormLabel htmlFor="formFile">{''}</CFormLabel>
-        <CButtonGroup className="float-end me-3">
-          <CFormInput
-            className="mx-0"
-            type="file"
-            id="formFile"
-            name="formFile"
-            onChange={(e) => handlerFile(e)}
-          />
-          <CButton color="primary" className="mx-0" onClick={handlerUpload}>
-            Actualizar
-          </CButton>
-        </CButtonGroup>
-      </div>
-
       <WidgetsDropdown dataStadisticits={attendanceUpdated?.dataAllStatistic} />
-
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
@@ -290,9 +234,9 @@ const Dashboard = () => {
                 datasets: attendanceUpdated?.dataAllStatistic.map((item) => {
                   return {
                     label: item.title,
-                    backgroundColor: hexToRgba(getStyle(`--cui-${item.color}`), 10),
-                    borderColor: getStyle(`--cui-${item.color}`),
-                    pointHoverBackgroundColor: getStyle(`--cui-${item.color}`),
+                    backgroundColor: hexToRgba(getStyle(`--cui-${colorStatus[item.title]}`), 10),
+                    borderColor: getStyle(`--cui-${colorStatus[item.title]}`),
+                    pointHoverBackgroundColor: getStyle(`--cui-${colorStatus[item.title]}`),
                     borderWidth: 2,
                     data: item.valuesXdays,
                     fill: true,
@@ -337,31 +281,30 @@ const Dashboard = () => {
           ) : (
             <CRow>
               <CCol sm={6}>
-     
-                  <CCardBody className='mt-3'>
-                    <CChartDoughnut
-                      data={{
-                        labels: attendanceUpdated?.dataAllStatistic.map((item) => {
-                          return item.title
-                        }),
-                        datasets: [
-                          {
-                            backgroundColor: ['#2eb85c', '#f9b115', '#e55353', '#3399ff'],
-                            data: attendanceUpdated?.dataAllStatistic.map((item) => {
-                              return item.percent
-                            }),
-                          },
-                        ],
-                      }}
-                    />
-                  </CCardBody>
+                <CCardBody className="mt-3">
+                  <CChartDoughnut
+                    data={{
+                      labels: attendanceUpdated?.dataAllStatistic.map((item) => {
+                        return item.title
+                      }),
+                      datasets: [
+                        {
+                          backgroundColor: ['#2eb85c', '#f9b115', '#e55353', '#3399ff'],
+                          data: attendanceUpdated?.dataAllStatistic.map((item) => {
+                            return item.percent
+                          }),
+                        },
+                      ],
+                    }}
+                  />
+                </CCardBody>
               </CCol>
               <CCol sm={6}>
                 <CCardBody>
                   <CRow md={{ cols: 1 }} className="text-center pt-3 pb-5">
                     {attendanceUpdated &&
                       attendanceUpdated.dataAllStatistic.map((item, index) => (
-                        <CCol  key={index} className="mt-3">
+                        <CCol key={index} className="mt-3">
                           <div className="text-medium-emphasis">
                             {graphic
                               ? `Promedio de ${item.title} al mes`
@@ -373,16 +316,15 @@ const Dashboard = () => {
                               : `${item.percent}%`}
                           </strong>
                           <CProgress
-                           solid
+                            solid
                             className="mt-5 mb-3"
-                            color={item.color}
+                            color={colorStatus[item.title]}
                             value={item.percent}
                           />
                         </CCol>
                       ))}
                   </CRow>
-                  </CCardBody>
-               
+                </CCardBody>
               </CCol>
             </CRow>
           )}
@@ -403,7 +345,7 @@ const Dashboard = () => {
                         ? Math.round(item.valueMonth / item.valuesXdays.length)
                         : `${item.percent}%`}
                     </strong>
-                    <CProgress thin className="mt-2" color={item.color} value={item.percent} />
+                    <CProgress thin className="mt-2" color={colorStatus[item.title]} value={item.percent} />
                   </CCol>
                 ))}
             </CRow>
@@ -412,152 +354,6 @@ const Dashboard = () => {
       </CCard>
 
       {/* <WidgetsBrand withCharts /> */}
-      {/* grafico de asistencias y tardanzas */}
-      <CRow>
-        <CCol xs>
-          <CCard className="mb-4">
-            <CCardHeader>Registros de los empleados</CCardHeader>
-            <CCardBody>
-              <br />
-
-              <CTable align="middle" className="mb-0 border" hover responsive>
-                <CTableHead color="light">
-                  <CTableRow>
-                    <CTableHeaderCell className="text-center">
-                      <CIcon icon={cilPeople} />
-                    </CTableHeaderCell>
-                    <CTableHeaderCell>Empleados</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Asistencias</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Tardanzas</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Ausencias</CTableHeaderCell>
-                    <CTableHeaderCell>% Asistencias</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">% Tardanzas</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">% Ausencias</CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
-                <CTableBody>
-                  {attendanceUpdated?.dataAttendance.map((item, index) => (
-                    <CTableRow v-for="item in tableItems" key={index}>
-                      <CTableDataCell className="text-center">
-                        <CAvatar size="md" src={avatar1} status="success" />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div>{item.nameEmployee}</div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <div>{item.assitance}</div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <div>{item.tardies}</div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <div>{item.absences}</div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            <strong>
-                              {Math.round(
-                                (item.assitance / (item.assitance + item.tardies + item.absences)) *
-                                  100,
-                              )}
-                              %
-                            </strong>
-                          </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">
-                              Jun 11, 2021 - Jul 10, 2021
-                            </small>
-                          </div>
-                        </div>
-                        <CProgress
-                          thin
-                          color={
-                            Math.round(
-                              (item.assitance / (item.assitance + item.tardies + item.absences)) *
-                                100,
-                            ) > 60
-                              ? 'success'
-                              : 'warning'
-                          }
-                          value={Math.round(
-                            (item.assitance / (item.assitance + item.tardies + item.absences)) *
-                              100,
-                          )}
-                        />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            <strong>
-                              {Math.round(
-                                (item.tardies / (item.assitance + item.tardies + item.absences)) *
-                                  100,
-                              )}
-                              %
-                            </strong>
-                          </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">
-                              Jun 11, 2021 - Jul 10, 2021
-                            </small>
-                          </div>
-                        </div>
-                        <CProgress
-                          thin
-                          color={
-                            Math.round(
-                              (item.tardies / (item.assitance + item.tardies + item.absences)) *
-                                100,
-                            ) < 30
-                              ? 'warning'
-                              : 'danger'
-                          }
-                          value={Math.round(
-                            (item.tardies / (item.assitance + item.tardies + item.absences)) * 100,
-                          )}
-                        />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            <strong>
-                              {Math.round(
-                                (item.absences / (item.assitance + item.tardies + item.absences)) *
-                                  100,
-                              )}
-                              %
-                            </strong>
-                          </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">
-                              Jun 11, 2021 - Jul 10, 2021
-                            </small>
-                          </div>
-                        </div>
-                        <CProgress
-                          thin
-                          color={
-                            Math.round(
-                              (item.absences / (item.assitance + item.tardies + item.absences)) *
-                                100,
-                            ) < 30
-                              ? 'success'
-                              : 'danger'
-                          }
-                          value={Math.round(
-                            (item.absences / (item.assitance + item.tardies + item.absences)) * 100,
-                          )}
-                        />
-                      </CTableDataCell>
-                    </CTableRow>
-                  ))}
-                </CTableBody>
-              </CTable>
-            </CCardBody>
-          </CCard>
-        </CCol>
-      </CRow>
     </>
   )
 }

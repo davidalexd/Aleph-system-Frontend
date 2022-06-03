@@ -25,7 +25,7 @@ const Login = () => {
   const { loading } = useSelector((state) => state.ui)
   const navigate = useNavigate()
   const [formValues, handleInputChange] = useForm({
-    email: 'davidalexd@gmail.com',
+    email: 'farfan@gmail.com',
     password: '123456',
   })
   const { email, password } = formValues

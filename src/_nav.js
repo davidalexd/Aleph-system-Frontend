@@ -13,6 +13,7 @@ import {
   cilFindInPage,
   cilNotes,
   cilPencil,
+  cilPeople,
   cilPuzzle,
   cilSettings,
   cilSpeedometer,
@@ -57,6 +58,12 @@ const _nav = [
     name: 'Mis Asistencias',
     to: '/manage/myattendances',
     icon: <CIcon icon={cilClock} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Asistencias de usuarios',
+    to: '/manage/usersattendances',
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,

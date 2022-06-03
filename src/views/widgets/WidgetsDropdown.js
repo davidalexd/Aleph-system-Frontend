@@ -14,6 +14,11 @@ const typeIcon={
   Permisos:cilDescription,
 
 }
+const colorStatus ={
+  Asistencias:"success",
+  Tardanzas:"warning",
+  Faltas:"danger",
+}
 const WidgetsDropdown = ({dataStadisticits}) => {
   return (
     <CRow>
@@ -23,7 +28,7 @@ const WidgetsDropdown = ({dataStadisticits}) => {
             <CCol sm={6} lg={3} key={index}>
               <CWidgetStatsA
                 className="mb-4"
-                color={item.color}
+                color={colorStatus[item.title]}
                 value={
                   <>
                     {item.valueMonth}{' '}

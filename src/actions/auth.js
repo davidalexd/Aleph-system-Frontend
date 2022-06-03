@@ -6,16 +6,15 @@ export const startLoginEmailPassword = (email, password) => {
   return async (dispatch) => {
     dispatch(startLoading())
     try {
-      const resp = await fetchSinToken('auth', {email,password},'POST');
+      const resp = await fetchSinToken('auth/login', {email,password},'POST');
       const body = await resp.json();
     
-      if (body.ok) {
-        localStorage.setItem('token',body.token);
+      if (body.access) {
+        const {data,access}=body;
+        localStorage.setItem('token',`${access.token_type} ${access.token}`);
         localStorage.setItem('token-init-date',new Date().getTime())
-        dispatch(login({uid:body.uid,name:body.name}))
+        dispatch(login({uid:data.id,name:`${data.first_name} ${data.last_name}`}))
         dispatch(finishLoading())
-      }else{
-        console.log(body.msg,"error")
       }
       dispatch(finishLoading())
     } catch (error) {
@@ -29,23 +28,23 @@ export const startLoginEmailPassword = (email, password) => {
 
 export const startRegisterEmail = (email, password,name) => {
   return async (dispatch) => {
-    dispatch(startLoading())
+    // dispatch(startLoading())
     try {
-      const resp = await fetchSinToken('auth/new', {email,password,name},'POST');
-      const body = await resp.json();
+      // const resp = await fetchSinToken('auth/signup', {email,password,name},'POST');
+      // const body = await resp.json();
  
-      if (body.ok) {
-        localStorage.setItem('token',body.token);
-        localStorage.setItem('token-init-date',new Date().getTime())
-        dispatch(login({uid:body.uid,name:body.name}))
-        dispatch(finishLoading())
-      }else{
-        console.log(body.msg,"error")
-      }
-      dispatch(finishLoading())
+      // if (body.ok) {
+      //   localStorage.setItem('token',body.token);
+      //   localStorage.setItem('token-init-date',new Date().getTime())
+      //   dispatch(login({uid:body.uid,name:body.name}))
+      //   dispatch(finishLoading())
+      // }else{
+      //   console.log(body.msg,"error")
+      // }
+      // dispatch(finishLoading())
     } catch (error) {
-      dispatch(finishLoading())
-      console.log(error,"usuario no registrado")
+      // dispatch(finishLoading())
+      // console.log(error,"usuario no registrado")
     }
   }
 }
@@ -57,12 +56,13 @@ export const startRegisterEmail = (email, password,name) => {
 export const startChecking = ()=>{
   return async(dispatch)=>{
     try{
-      const resp = await fetchConToken('auth/renew');
+      const resp = await fetchConToken('auth/user');
       const body= await resp.json();
-      if(body.ok){
-        localStorage.setItem('token',body.token);
+      if(body.user){
+        const {user}=body;
+        //localStorage.setItem('token',body.token);
         localStorage.setItem('token-init-data',new Date().getTime());
-        dispatch(login({uid:body.uid,name:body.name}))
+        dispatch(login({uid:user.id,name:`${user.first_name} ${user.last_name}`}))
       }else{
         dispatch(checkingFininsh());
         console.log('error no existe el token')
@@ -83,8 +83,17 @@ export const login = (user) => ({
 
 export const startLogout = () => {
   return async (dispatch) => {
-    localStorage.clear();
-     dispatch(logout())
+    try{
+      const resp = await fetchConToken('auth/revoke');
+      const body= await resp.json();
+      if(body.message){
+        localStorage.clear();
+        dispatch(logout())
+      }
+    }catch(error){
+      console.log(error)
+    }
+
   }
 }
 

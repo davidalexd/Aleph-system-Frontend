@@ -21,26 +21,26 @@ const fetchConToken = (endpoint, data, method = 'GET') => {
     return fetch(url, {
       method,
       headers: {
-        'x-token': token,
+        Authorization: token,
       },
     })
   } else {
-    if (!data.get('file')) {
+    if (data.get('excel')) {
       return fetch(url, {
         method,
         headers: {
-          'Content-type': 'application/json',
-          'x-token': token,
+          Authorization: token,
         },
-        body: JSON.stringify(data),
+        body: data,
       })
     } else {
       return fetch(url, {
         method,
         headers: {
-          'x-token': token,
+          'Content-type': 'application/json',
+          Authorization: token,
         },
-        body: data,
+        body: JSON.stringify(data),
       })
     }
   }
