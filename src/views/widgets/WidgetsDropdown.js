@@ -41,7 +41,7 @@ const WidgetsDropdown = ({dataStadisticits}) => {
                 chart={
                   <CIcon className="mt-3 mx-3 pb-2" icon={typeIcon[item.title]} size="8xl" ></CIcon>
                 }
-              />{' '}
+              />
             </CCol>
           ))}
       </CRow>

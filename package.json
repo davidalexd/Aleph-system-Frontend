@@ -37,6 +37,7 @@
     "classnames": "^2.3.1",
     "core-js": "^3.21.1",
     "excel-to-json-in-react-js": "^1.0.2",
+    "moment": "^2.29.3",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-app-polyfill": "^3.0.0",
@@ -46,7 +47,8 @@
     "react-router-dom": "^6.2.2",
     "redux": "4.1.2",
     "redux-thunks": "^1.0.0",
-    "simplebar-react": "^2.3.6"
+    "simplebar-react": "^2.3.6",
+    "sweetalert2": "^11.4.17"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.2",

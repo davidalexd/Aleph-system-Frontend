@@ -14,5 +14,7 @@ export const types = {
   authStartTokenRenew:'[auth] Start token renew',
   authLogout:'[auth] Logout',
 
+  eventAddNew: '[event] Add new Permission',
+
   attendanceUpdate:'[attendance] Attendance update data'
 }
