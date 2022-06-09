@@ -25,24 +25,23 @@ const fetchConToken = (endpoint, data, method = 'GET') => {
       },
     })
   } else {
-    if (data.get('excel')) {
-      return fetch(url, {
-        method,
-        headers: {
-          Authorization: token,
-        },
-        body: data,
-      })
-    } else {
-      return fetch(url, {
-        method,
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: token,
-        },
-        body: JSON.stringify(data),
-      })
-    }
+    return fetch(url, {
+      method,
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify(data),
+    })
   }
 }
 export { fetchConToken, fetchSinToken }
+// if (data.get('excel')) {
+//   return fetch(url, {
+//     method,
+//     headers: {
+//       Authorization: token,
+//     },
+//     body: data,
+//   })
+// }

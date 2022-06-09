@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   CBadge,
   CButton,
@@ -17,16 +17,33 @@ import {
   CTableRow,
 } from '@coreui/react'
 import PermissionModalAdministator from './PermissionModalAdministator'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { uiOpenModal } from 'src/actions/ui'
+import { eventSetActive, getPermissions } from 'src/actions/permissions'
 const colorStates = {
-  aceptado: 'success',
-  rechazado: 'danger',
-  revisando: 'info',
+  ACCEPTED: 'success',
+  REJECTED: 'danger',
+  SENDED: 'info',
+}
+const statesValues = {
+  ACCEPTED: 'ACEPTADO',
+  REJECTED: 'DENEGADO',
+  SENDED: 'ENVIADO',
+}
+const TiposDeAutorizacion = {
+  PERMISO_PERSONAL:'Permiso personal',
+  SOLICITUD_HORAS_EXTRAS:'Horas extra',
+  TRABAJO_CAMPO:'Autorizacion para trabajo en campo',
+  COMPENSACION:'Compensacion de horas',
 }
 const UsersPermissionList = () => {
   const dispatch = useDispatch()
-  const handleClickInfoPermisse = () => {
+  const { permissions } = useSelector((state) => state.permission);
+  useEffect(() => {
+    dispatch(getPermissions());
+  }, [dispatch])
+  const handleClickInfoPermisse = (permission) => {
+    dispatch(eventSetActive(permission));
     dispatch(uiOpenModal())
   }
   return (
@@ -56,7 +73,7 @@ const UsersPermissionList = () => {
             <CTable color="dark" striped>
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell scope="col">ID</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Id permiso</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Nombre del trabajador</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Tipo de permiso</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Fecha de solicitud</CTableHeaderCell>
@@ -66,100 +83,21 @@ const UsersPermissionList = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {[
-                  {
-                    nameEmployee: 'Juan Carlos Torres',
-                    typePermission: 'Permiso personal',
-                    creationDate: '10-01-2022',
-                    updateState: '12-02-2022',
-                    state: 'revisando',
-                  },
-                  {
-                    nameEmployee: 'Rolando Paucar',
-                    typePermission: 'Autorizacion para trabajo en campo',
-                    creationDate: '10-01-2022',
-                    updateState: '12-02-2022',
-                    state: 'aceptado',
-                  },
-                  {
-                    nameEmployee: 'fernando parreño',
-                    typePermission: 'Horas extra',
-                    creationDate: '9-01-2022',
-                    updateState: '13-02-2022',
-                    state: 'rechazado',
-                  },
-
-                  ,
-                  {
-                    nameEmployee: 'grover cornejo',
-                    typePermission: 'Compesación de horas',
-                    creationDate: '12-01-2022',
-                    updateState: '13-02-2022',
-                    state: 'aceptado',
-                  },
-
-                  {
-                    nameEmployee: 'alexandra paucar',
-                    typePermission: 'Permiso personal',
-                    creationDate: '16-01-2022',
-                    updateState: '20-02-2022',
-                    state: 'rechazado',
-                  },
-
-                  {
-                    nameEmployee: 'eda paucar',
-                    typePermission: 'Autorizacion para trabajo en campo',
-                    creationDate: '10-01-2022',
-                    updateState: '21-02-2022',
-                    state: 'aceptado',
-                  },
-
-                  {
-                    nameEmployee: 'cesar cadillo',
-                    typePermission: 'Horas extra',
-                    creationDate: '17-01-2022',
-                    updateState: '21-02-2022',
-                    state: 'revisando',
-                  },
-
-                  {
-                    nameEmployee: 'Juan Carlos Torres',
-                    typePermission: 'Compesación de horas',
-                    creationDate: '19-01-2022',
-                    updateState: '22-02-2022',
-                    state: 'aceptado',
-                  },
-
-                  {
-                    nameEmployee: 'yon gonzales',
-                    typePermission: 'Permiso personal',
-                    creationDate: '22-01-2022',
-                    updateState: '30-02-2022',
-                    state: 'aceptado',
-                  },
-
-                  {
-                    nameEmployee: 'Carlos martinez',
-                    typePermission: 'Autorizacion para trabajo en campo',
-                    creationDate: '15-01-2022',
-                    updateState: '26-02-2022',
-                    state: 'rechazado',
-                  },
-                ].map((el, index) => (
-                  <CTableRow key={index}>
-                    <CTableHeaderCell scope="row">{index}</CTableHeaderCell>
-                    <CTableDataCell>{el.nameEmployee}</CTableDataCell>
-                    <CTableDataCell>{el.typePermission}</CTableDataCell>
-                    <CTableDataCell>{el.creationDate}</CTableDataCell>
-                    <CTableDataCell>{el.updateState}</CTableDataCell>
+                {permissions?.map((el) => (
+                  <CTableRow key={el.id}>
+                    <CTableHeaderCell scope="row">{el.id}</CTableHeaderCell>
+                    <CTableDataCell>{el.employee_id}</CTableDataCell>
+                    <CTableDataCell>{TiposDeAutorizacion[el.reference]}</CTableDataCell>
+                    <CTableDataCell>{el.created_at}</CTableDataCell>
+                    <CTableDataCell>{el.updated_at}</CTableDataCell>
                     <CTableDataCell>
-                      <CButton color="primary" variant="outline" onClick={handleClickInfoPermisse}>
+                      <CButton color="primary" variant="outline" onClick={()=>handleClickInfoPermisse(el)}>
                         Ver detalles
                       </CButton>
                     </CTableDataCell>
                     <CTableDataCell>
                       <CBadge color={colorStates[el.state]} shape="rounded-pill">
-                        {el.state}
+                        {statesValues[el.state]}
                       </CBadge>
                     </CTableDataCell>
                   </CTableRow>
