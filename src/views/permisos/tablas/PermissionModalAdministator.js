@@ -50,10 +50,17 @@ const initEvent = {
   employee_id: '',
 }
 const PermissionModalAdministator = () => {
+  
   const { modalOpen } = useSelector((state) => state.ui)
   const { activeEvent } = useSelector((state) => state.permission)
   const [formValues, setFormValues] = useState(initEvent)
+  useEffect(() => {
+    if (activeEvent) {
+      setFormValues(activeEvent)
+    }
+  }, [activeEvent])
   const {
+    id,
     employee_id,
     permission_date,
     state,
@@ -69,21 +76,17 @@ const PermissionModalAdministator = () => {
     dispatch(uiCloseModal())
     //cerrar modal
   }
-  const handleState = (permission,value) => {
-    if(value){
-      setFormValues({...formValues,state:"ACCEPTED"})
-      dispatch(eventStartUpdate({...permission,state:"ACCEPTED"}))
-    }else{
-      setFormValues({...formValues,state:"REJECTED"})
-      dispatch(eventStartUpdate({...permission,state:"REJECTED"}))
+  const handleState = (permission, value) => {
+    if (value) {
+      setFormValues({ ...formValues, state: 'ACCEPTED' })
+      dispatch(eventStartUpdate({ ...permission, state: 'ACCEPTED' }))
+    } else {
+      setFormValues({ ...formValues, state: 'REJECTED' })
+      dispatch(eventStartUpdate({ ...permission, state: 'REJECTED' }))
     }
   }
 
-  useEffect(() => {
-    if (activeEvent) {
-      setFormValues(activeEvent)
-    }
-  }, [activeEvent])
+
 
   return (
     <>
@@ -93,11 +96,16 @@ const PermissionModalAdministator = () => {
         </CModalHeader>
         <CModalBody>
           <CForm className="row g-2">
-            <CCol md={4}>
+            <CCol md={6}>
+              <CFormLabel htmlFor="exampleFormControlInput1">Id de autorizacion</CFormLabel>
+            </CCol>
+            <CCol md={6}>
               <CFormLabel htmlFor="exampleFormControlInput1">Fecha de reservacion</CFormLabel>
             </CCol>
-
-            <CCol md={8}>
+            <CCol md={6}>
+              <CFormLabel htmlFor="exampleFormControlInput1">{id}</CFormLabel>
+            </CCol>
+            <CCol md={6}>
               <CFormLabel htmlFor="exampleFormControlInput1">{permission_date}</CFormLabel>
             </CCol>
             <CCol md={6}>
@@ -105,7 +113,9 @@ const PermissionModalAdministator = () => {
             </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="statictext">
-                <CBadge color={colorStates[state]} shape="rounded-pill">{statesValues[state]}</CBadge>
+                <CBadge color={colorStates[state]} shape="rounded-pill">
+                  {statesValues[state]}
+                </CBadge>
               </CFormLabel>
             </CCol>
 
@@ -144,7 +154,7 @@ const PermissionModalAdministator = () => {
                   <CFormInput
                     type="text"
                     aria-label="Disabled input example"
-                    value={permission_detail.type_discount?"Con descuento":"Sin descuento"}
+                    value={permission_detail.type_discount ? 'Con descuento' : 'Sin descuento'}
                     disabled
                     readOnly
                   />
@@ -441,7 +451,7 @@ const PermissionModalAdministator = () => {
                   <CFormTextarea
                     id="exampleFormControlTextarea1"
                     aria-label="Disabled input example"
-                    value={comments?comments:"Sin comentarios"}
+                    value={comments ? comments : 'Sin comentarios'}
                     disabled
                     readOnly
                     rows="2"
@@ -464,12 +474,15 @@ const PermissionModalAdministator = () => {
                 </CCol>
               </>
             )}
-
           </CForm>
         </CModalBody>
         <CModalFooter>
-          <CButton color="success" onClick={()=>handleState(formValues,true)}>AUTORIZAR PERMISO</CButton>
-          <CButton color="danger" onClick={()=>handleState(formValues,false)}>DENEGAR PERMISO</CButton>
+          <CButton color="success" onClick={() => handleState(formValues, true)}>
+            AUTORIZAR PERMISO
+          </CButton>
+          <CButton color="danger" onClick={() => handleState(formValues, false)}>
+            DENEGAR PERMISO
+          </CButton>
         </CModalFooter>
       </CModal>
     </>

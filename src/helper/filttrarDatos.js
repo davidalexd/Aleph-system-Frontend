@@ -10,7 +10,6 @@ const filtrarDatos = (data) => {
     typeService,
     task,
   } = data
-
   let day = `${dateCreate.getDate() < 10 ? '0' : ''}${dateCreate.getDate()}`
   let mounth = `${dateCreate.getMonth() + 1 < 10 ? '0' : ''}${dateCreate.getMonth() + 1}`
   let year = dateCreate.getFullYear()

@@ -20,6 +20,8 @@ import PermissionModalAdministator from './PermissionModalAdministator'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiOpenModal } from 'src/actions/ui'
 import { eventSetActive, getPermissions } from 'src/actions/permissions'
+import Moment from 'react-moment'
+import 'moment/locale/es-mx'
 const colorStates = {
   ACCEPTED: 'success',
   REJECTED: 'danger',
@@ -36,7 +38,7 @@ const TiposDeAutorizacion = {
   TRABAJO_CAMPO:'Autorizacion para trabajo en campo',
   COMPENSACION:'Compensacion de horas',
 }
-const UsersPermissionList = () => {
+const AdministratorPermissionList = () => {
   const dispatch = useDispatch()
   const { permissions } = useSelector((state) => state.permission);
   useEffect(() => {
@@ -89,7 +91,7 @@ const UsersPermissionList = () => {
                     <CTableDataCell>{el.employee_id}</CTableDataCell>
                     <CTableDataCell>{TiposDeAutorizacion[el.reference]}</CTableDataCell>
                     <CTableDataCell>{el.created_at}</CTableDataCell>
-                    <CTableDataCell>{el.updated_at}</CTableDataCell>
+                    <CTableDataCell><Moment fromNow>{el.updated_at}</Moment></CTableDataCell>
                     <CTableDataCell>
                       <CButton color="primary" variant="outline" onClick={()=>handleClickInfoPermisse(el)}>
                         Ver detalles
@@ -112,4 +114,4 @@ const UsersPermissionList = () => {
   )
 }
 
-export default UsersPermissionList
+export default AdministratorPermissionList

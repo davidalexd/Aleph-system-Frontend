@@ -1,24 +1,18 @@
 import moment from 'moment'
 import { fetchConToken } from 'src/helper/fetch'
-import { filtrarDatos } from 'src/helper/formatedata'
+import { filtrarDatos } from 'src/helper/filttrarDatos'
 import { prepareEventsPermission } from 'src/helper/prepareEventsPermission'
 import { types } from 'src/types/types'
 import Swal from 'sweetalert2'
+//agregar nuevo permiso
 export const eventStartAddNew = (data) => {
-  return async (dispatch, getState) => {
+  return async () => {
     const dataRef= filtrarDatos(data)
-    // const { uid, name } = getState().auth
+    //getState const { uid, name } = getState().auth
     try {
       const resp = await fetchConToken('permissions', dataRef, 'POST')
       const body = await resp.json()
       if (body) {
-        // data.id=body.id
-        //   data.user={
-        //     _id:uid,
-        //     name:name
-        //   }
-        // dispatch(permissionAddNew(data))
-      // console.log(body)
         Swal.fire({
           icon: 'success',
           title: 'Datos Guardados',
@@ -31,11 +25,8 @@ export const eventStartAddNew = (data) => {
   }
 }
 
-// const permissionAddNew = (permission) => ({
-//   type: types.eventAddNew,
-//   payload: permission,
-// })
 
+//actualizar estado de permiso 
 const eventUpdated = (event) => ({
   type: types.eventUpdated,
   payload: event,
@@ -46,7 +37,7 @@ export const eventStartUpdate=(permission)=>{
       const resp =await fetchConToken(`permissions/${permission.id}`,{state:permission.state},'PUT');
       const body = await resp.json()
       if(body.message){
-        dispatch(eventUpdated(permission))
+        dispatch(eventUpdated({...permission,updated_at:body.update_at}))
         Swal.fire({
           icon: 'success',
           title: 'Datos Actualizados',
@@ -59,12 +50,16 @@ export const eventStartUpdate=(permission)=>{
   }
 }
 
-
+//traer los datos de un permiso
 export const eventSetActive = (permission) => ({
   type: types.eventSetActive,
   payload: permission,
 });
-
+//traer todos los permisos 
+const eventPermissionsLoaded=(permissions)=>({
+  type:types.eventLoaded,
+  payload:permissions
+})
 export const getPermissions = ()=>{
   return async(dispatch)=>{
     try{
@@ -79,7 +74,30 @@ export const getPermissions = ()=>{
   }
 }
 
-const eventPermissionsLoaded=(permissions)=>({
-  type:types.eventLoaded,
-  payload:permissions
-})
+
+//traer todos los permisos de un respectivo usuario 
+export const getUserPermissions = ()=>{
+  return async(dispatch)=>{
+    try{
+      const resp =await fetchConToken('users/permissions');
+      const body=await resp.json();
+      const permissions = prepareEventsPermission(body.data)
+      dispatch(eventPermissionsLoaded(permissions));
+    }catch(error){
+      console.log(error)
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

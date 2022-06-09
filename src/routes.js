@@ -5,8 +5,8 @@ const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 //Permisos tablas , formularios
 const permisos = React.lazy(() => import('./views/permisos/formulario/PermissionForm'))
-const listadoPermisos = React.lazy(() => import('./views/permisos/tablas/PermissionList'))
-const listadoPermisosUsuarios = React.lazy(() => import('./views/permisos/tablas/UsersPermissionList'))
+const listadoPermisos = React.lazy(() => import('./views/permisos/tablas/UserPermissionList'))
+const listadoPermisosUsuarios = React.lazy(() => import('./views/permisos/tablas/AdministratorPermissionList'))
 //Asistencias
 const asistencias=React.lazy(() => import('./views/asistencias/tablas/AttendanceList'))
 const listadoAsistenciasUsuarios=React.lazy(() => import('./views/asistencias/tablas/UsersAttendanceList'))

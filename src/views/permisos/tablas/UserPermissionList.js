@@ -15,21 +15,40 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import PermissionModalUser from './PermissionModalUser'
 import { uiOpenModal } from 'src/actions/ui'
-const PermissionList = () => {
+import { eventSetActive, getUserPermissions } from 'src/actions/permissions'
+import Moment from 'react-moment'
+import 'moment/locale/es-mx'
+const TiposDeAutorizacion = {
+  PERMISO_PERSONAL:'Permiso personal',
+  SOLICITUD_HORAS_EXTRAS:'Horas extra',
+  TRABAJO_CAMPO:'Autorizacion para trabajo en campo',
+  COMPENSACION:'Compensacion de horas',
+}
+const colorStates = {
+  ACCEPTED: 'success',
+  REJECTED: 'danger',
+  SENDED: 'info',
+}
+const statesValues = {
+  ACCEPTED: 'ACEPTADO',
+  REJECTED: 'DENEGADO',
+  SENDED: 'ENVIADO',
+}
+const UserPermissionList = () => {
   const dispatch = useDispatch()
-  const handleClickInfoPermisse = () => {
+  const { permissions } = useSelector((state) => state.permission);
+  useEffect(() => {
+    dispatch(getUserPermissions());
+  }, [dispatch])
+  const handleClickInfoPermisse = (permission) => {
+    dispatch(eventSetActive(permission));
     dispatch(uiOpenModal())
   }
 
-  const colorStates = {
-    aceptado: 'success',
-    rechazado: 'danger',
-    revisando: 'info',
-  }
   return (
     <>
       <CRow>
@@ -58,55 +77,36 @@ const PermissionList = () => {
               <CTable color="dark" striped>
                 <CTableHead>
                   <CTableRow>
-                    <CTableHeaderCell scope="col">ID</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Id de autorizacion</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Tipo de permiso</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Fecha de creacion</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Ultima actualizacion</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Detalles</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Autorizado por</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Estado</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {[
-                    { typePermisse: 'Permiso personal', dateDay: '17/03/2022', state: 'aceptado' },
-                    { typePermisse: 'Permiso personal', dateDay: '17/03/2022', state: 'aceptado' },
-                    { typePermisse: 'Permiso personal', dateDay: '18/03/2022', state: 'rechazado' },
-                    { typePermisse: 'Permiso personal', dateDay: '18/03/2022', state: 'revisando' },
-                    { typePermisse: 'Horas extra', dateDay: '17/03/2022', state: 'aceptado' },
-                    { typePermisse: 'Horas extra', dateDay: '18/03/2022', state: 'rechazado' },
-                    { typePermisse: 'Horas extra', dateDay: '18/03/2022', state: 'rechazado' },
-                    {
-                      typePermisse: 'Compesación de horas',
-                      dateDay: '17/03/2022',
-                      state: 'aceptado',
-                    },
-                    {
-                      typePermisse: 'Compesación de horas',
-                      dateDay: '18/03/2022',
-                      state: 'rechazado',
-                    },
-                    {
-                      typePermisse: 'Compesación de horas',
-                      dateDay: '18/03/2022',
-                      state: 'aceptado',
-                    },
-                  ].map((el, index) => (
-                    <CTableRow key={index}>
-                      <CTableHeaderCell scope="row">{index}</CTableHeaderCell>
-                      <CTableDataCell>{el.typePermisse}</CTableDataCell>
-                      <CTableDataCell>{el.dateDay}</CTableDataCell>
+                  {permissions?.map((el) => (
+                    <CTableRow key={el.id}>
+                      <CTableHeaderCell scope="row">{el.id}</CTableHeaderCell>
+                      <CTableDataCell>{TiposDeAutorizacion[el.reference]}</CTableDataCell>
+                      <CTableDataCell>{el.created_at}</CTableDataCell>
+                      <CTableDataCell><Moment fromNow>{el.updated_at}</Moment></CTableDataCell>
                       <CTableDataCell>
                         <CButton
                           color="primary"
                           variant="outline"
-                          onClick={handleClickInfoPermisse}
+                          onClick={()=>handleClickInfoPermisse(el)}
                         >
                           Ver detalles
                         </CButton>
                       </CTableDataCell>
+                      <CTableDataCell>{el.authorized_by}</CTableDataCell>
                       <CTableDataCell>
-                        <CBadge color={colorStates[el.state]} shape="rounded-pill">
-                          {el.state}
-                        </CBadge>
+                      <CBadge color={colorStates[el.state]} shape="rounded-pill">
+                        {statesValues[el.state]}
+                      </CBadge>
                       </CTableDataCell>
                     </CTableRow>
                   ))}
@@ -120,4 +120,4 @@ const PermissionList = () => {
     </>
   )
 }
-export default PermissionList
+export default UserPermissionList

@@ -12,12 +12,6 @@ export const permissionReducer = (state = initialState, action) => {
         ...state,
         activeEvent: action.payload,
       };
-    // case types.eventAddNew:
-    //   return {
-    //     ...state,
-    //     permissions: [...state.permissions, action.payload],
-    //   }
-
     case types.eventUpdated:
       return {
         ...state,
