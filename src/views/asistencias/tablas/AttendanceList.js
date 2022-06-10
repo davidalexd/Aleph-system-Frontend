@@ -16,7 +16,18 @@ import {
 } from '@coreui/react'
 import { CChartDoughnut } from '@coreui/react-chartjs'
 import React from 'react'
-
+const data = {
+  stadistic: [
+    { name: 'asistencias', value: 15 },
+    { name: 'tardanzas', value: 15 },
+    { name: 'faltas', value: 15 },
+  ],
+  stadisticDays: [
+    { day: 16, hour: '10:00AM', mounth: 'Marzo', status: 'tardanza' },
+    { day: 17, hour: '7:00AM', mounth: 'Marzo', status: 'asistencia' },
+    { day: 18, hour: '--', mounth: 'Marzo', status: 'falta' },
+  ],
+}
 const AttendanceList = () => {
   return (
     <CRow>
@@ -51,11 +62,11 @@ const AttendanceList = () => {
               <CCardBody>
                 <CChartDoughnut
                   data={{
-                    labels: ['Asistencia', 'Tardanza','Faltas'],
+                    labels: data?.stadistic.map((el)=>el.name),
                     datasets: [
                       {
                         backgroundColor: ['#2eb85c', '#f9b115', '#e55353', '#3399ff'],
-                        data: [25, 3, 2],
+                        data: data?.stadistic.map((el)=>el.value),
                       },
                     ],
                   }}
@@ -90,138 +101,20 @@ const AttendanceList = () => {
                     </CTableRow>
                   </CTableHead>
                   <CTableBody>
-                    <CTableRow>
-                      <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                      <CTableDataCell>16</CTableDataCell>
-                      <CTableDataCell>Marzo</CTableDataCell>
-                      <CTableDataCell>7:00AM</CTableDataCell>
-                      <CTableDataCell>Entrada</CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge color="success" shape="rounded-pill">
-                          Asistencia
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableHeaderCell scope="row">2</CTableHeaderCell>
-                      <CTableDataCell>16</CTableDataCell>
-                      <CTableDataCell>Marzo</CTableDataCell>
-                      <CTableDataCell>7:00AM</CTableDataCell>
-                      <CTableDataCell>Salida</CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge color="success" shape="rounded-pill">
-                          Asistencia
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableHeaderCell scope="row">3</CTableHeaderCell>
-                      <CTableDataCell>17</CTableDataCell>
-                      <CTableDataCell>Marzo</CTableDataCell>
-                      <CTableDataCell>7:00AM</CTableDataCell>
-                      <CTableDataCell>Salida</CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge color="success" shape="rounded-pill">
-                          Asistencia
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableHeaderCell scope="row">4</CTableHeaderCell>
-                      <CTableDataCell>17</CTableDataCell>
-                      <CTableDataCell>Marzo</CTableDataCell>
-                      <CTableDataCell>7:00AM</CTableDataCell>
-                      <CTableDataCell>Salida</CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge color="warning" shape="rounded-pill">
-                          Tardanza
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableHeaderCell scope="row">5</CTableHeaderCell>
-                      <CTableDataCell>18</CTableDataCell>
-                      <CTableDataCell>Marzo</CTableDataCell>
-                      <CTableDataCell>7:00AM</CTableDataCell>
-                      <CTableDataCell>Entrada</CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge color="warning" shape="rounded-pill">
-                          Tardanza
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                      <CTableDataCell>18</CTableDataCell>
-                      <CTableDataCell>Marzo</CTableDataCell>
-                      <CTableDataCell>7:00AM</CTableDataCell>
-                      <CTableDataCell>Salida</CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge color="warning" shape="rounded-pill">
-                          Tardanza
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                      <CTableDataCell>19</CTableDataCell>
-                      <CTableDataCell>Marzo</CTableDataCell>
-                      <CTableDataCell>7:00AM</CTableDataCell>
-                      <CTableDataCell>Salida</CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge color="warning" shape="rounded-pill">
-                          Tardanza
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                      <CTableDataCell>19</CTableDataCell>
-                      <CTableDataCell>Marzo</CTableDataCell>
-                      <CTableDataCell>7:00AM</CTableDataCell>
-                      <CTableDataCell>Salida</CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge color="warning" shape="rounded-pill">
-                          Tardanza
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                      <CTableDataCell>20</CTableDataCell>
-                      <CTableDataCell>Marzo</CTableDataCell>
-                      <CTableDataCell>7:00AM</CTableDataCell>
-                      <CTableDataCell>Salida</CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge color="warning" shape="rounded-pill">
-                          Tardanza
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                      <CTableDataCell>20</CTableDataCell>
-                      <CTableDataCell>Marzo</CTableDataCell>
-                      <CTableDataCell>7:00AM</CTableDataCell>
-                      <CTableDataCell>Salida</CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge color="warning" shape="rounded-pill">
-                          Tardanza
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
-                    <CTableRow>
-                      <CTableHeaderCell scope="row">6</CTableHeaderCell>
-                      <CTableDataCell>21</CTableDataCell>
-                      <CTableDataCell>Marzo</CTableDataCell>
-                      <CTableDataCell>7:00AM</CTableDataCell>
-                      <CTableDataCell>Salida</CTableDataCell>
-                      <CTableDataCell>
-                        <CBadge color="warning" shape="rounded-pill">
-                          Tardanza
-                        </CBadge>
-                      </CTableDataCell>
-                    </CTableRow>
+                    {data?.stadisticDays.map((el,index) => (
+                      <CTableRow key={index}>
+                        <CTableHeaderCell scope="row">1</CTableHeaderCell>
+                        <CTableDataCell>{el.day}</CTableDataCell>
+                        <CTableDataCell>{el.mounth}</CTableDataCell>
+                        <CTableDataCell>{el.hour}</CTableDataCell>
+                        <CTableDataCell>{el.status}</CTableDataCell>
+                        <CTableDataCell>
+                          <CBadge color="success" shape="rounded-pill">
+                            Asistencia
+                          </CBadge>
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))}
                   </CTableBody>
                 </CTable>
               </CCardBody>

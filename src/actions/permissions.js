@@ -1,4 +1,3 @@
-import moment from 'moment'
 import { fetchConToken } from 'src/helper/fetch'
 import { filtrarDatos } from 'src/helper/filttrarDatos'
 import { prepareEventsPermission } from 'src/helper/prepareEventsPermission'
@@ -46,6 +45,11 @@ export const eventStartUpdate=(permission)=>{
       }
     }catch(error){
       console.log(error)
+      Swal.fire({
+        icon: 'error',
+        title: 'Ocurrio un error',
+        text: 'Datos no actualizados',
+      })
     }
   }
 }

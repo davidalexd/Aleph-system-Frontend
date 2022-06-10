@@ -13,7 +13,7 @@ export const startLoginEmailPassword = (email, password) => {
         const {data,access}=body;
         localStorage.setItem('token',`${access.token_type} ${access.token}`);
         localStorage.setItem('token-init-date',new Date().getTime())
-        dispatch(login({uid:data.id,name:`${data.first_name} ${data.last_name}`}))
+        dispatch(login({uid:data.id,name:`${data.first_name} ${data.last_name}`,role:access.scopes}))
         dispatch(finishLoading())
       }
       dispatch(finishLoading())
@@ -28,23 +28,22 @@ export const startLoginEmailPassword = (email, password) => {
 
 export const startRegisterEmail = (email, password,name) => {
   return async (dispatch) => {
-    // dispatch(startLoading())
+    dispatch(startLoading())
     try {
-      // const resp = await fetchSinToken('auth/signup', {email,password,name},'POST');
-      // const body = await resp.json();
- 
-      // if (body.ok) {
-      //   localStorage.setItem('token',body.token);
-      //   localStorage.setItem('token-init-date',new Date().getTime())
-      //   dispatch(login({uid:body.uid,name:body.name}))
-      //   dispatch(finishLoading())
-      // }else{
-      //   console.log(body.msg,"error")
-      // }
-      // dispatch(finishLoading())
+      const resp = await fetchSinToken('auth/signup', {email,password,name},'POST');
+      const body = await resp.json();
+      if (body.ok) {
+        localStorage.setItem('token',body.token);
+        localStorage.setItem('token-init-date',new Date().getTime())
+        dispatch(login({uid:body.uid,name:body.name}))
+        dispatch(finishLoading())
+      }else{
+        console.log(body.msg,"error")
+      }
+      dispatch(finishLoading())
     } catch (error) {
-      // dispatch(finishLoading())
-      // console.log(error,"usuario no registrado")
+      dispatch(finishLoading())
+      console.log(error,"usuario no registrado")
     }
   }
 }
@@ -62,7 +61,7 @@ export const startChecking = ()=>{
         const {user}=body;
         //localStorage.setItem('token',body.token);
         localStorage.setItem('token-init-data',new Date().getTime());
-        dispatch(login({uid:user.id,name:`${user.first_name} ${user.last_name}`}))
+        dispatch(login({uid:user.id,name:`${user.first_name} ${user.last_name}`,role:user.scopes}))
       }else{
         dispatch(checkingFininsh());
         console.log('error no existe el token')

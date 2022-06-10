@@ -1,52 +1,57 @@
 import React, { useEffect, useState } from 'react'
 import {
-    CAvatar,
-    CBadge,
-    CButton,
-    CButtonGroup,
-    CCard,
-    CCardBody,
-    CCardHeader,
-    CCol,
-    CFormInput,
-    CFormLabel,
-    CProgress,
-    CRow,
-    CTable,
-    CTableBody,
-    CTableDataCell,
-    CTableHead,
-    CTableHeaderCell,
-    CTableRow,
-  } from '@coreui/react'
+  CAvatar,
+  CBadge,
+  CButton,
+  CButtonGroup,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CFormInput,
+  CFormLabel,
+  CProgress,
+  CRow,
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+} from '@coreui/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAttendance, startUpdateAttendance } from 'src/actions/attedance'
+import Swal from 'sweetalert2'
 const initFile = {
-    file: '',
-  }
+  file: '',
+}
 const UsersAttendanceList = () => {
-    const { attendanceUpdated } = useSelector((state) => state.attendance)
-    const dispatch = useDispatch()
-    useEffect(() => {
-      dispatch(getAttendance())
-    }, [dispatch])
+  const { attendanceUpdated } = useSelector((state) => state.attendance)
+  const { loading } = useSelector((state) => state.ui)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getAttendance())
+  }, [dispatch,loading])
 
-    
-      const [files, setFiles] = useState(initFile)
+  const [files, setFiles] = useState(initFile)
 
-    const handlerFile = (e) => {
-        let file = e.target.files[0]
-        setFiles({ ...files, file })
-      }
-      const handlerUpload = () => {
-        if (!files.file) {
-          return console.log('datos vacios')
-        }
-        dispatch(startUpdateAttendance(files))
-      }
+  const handlerFile = (e) => {
+    let file = e.target.files[0]
+    setFiles({ ...files, file })
+  }
+  const handlerUpload = () => {
+    if (!files.file) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'No seleccionaste ningun archivo',
+        text: 'Datos no actualizados',
+      })
+    }
+    dispatch(startUpdateAttendance(files))
+  }
   return (
     <>
-          <div className="mb-4">
+      <div className="mb-4">
         <CFormLabel htmlFor="formFile">{''}</CFormLabel>
         <CButtonGroup className="float-end me-3">
           <CFormInput
@@ -61,34 +66,32 @@ const UsersAttendanceList = () => {
           </CButton>
         </CButtonGroup>
       </div>
-        <CRow>
-      <CCol xs>
-        <CCard className="mb-4">
-          <CCardHeader>
-            <h4 id="traffic" className="card-title mb-0">
-              Registro de Solicitudes de los trabajadores de Aleph Group
-            </h4>
-          </CCardHeader>
-          <CCardBody>
-            <CRow className="mb-3">
-              <CFormLabel htmlFor="colFormLabel" className="col-sm-2 col-form-label">
-                Buscar un trabajador
-              </CFormLabel>
-              <CCol sm={10}>
-                <CFormInput
-                  type="email"
-                  id="colFormLabel"
-                  placeholder="busca por nombre o id,etc"
-                />
-              </CCol>
-            </CRow>
-            <br />
-            <CTable color='dark' align="middle" className="mb-0 border" hover responsive>
+      <CRow>
+        <CCol xs>
+          <CCard className="mb-4">
+            <CCardHeader>
+              <h4 id="traffic" className="card-title mb-0">
+                Registro de Solicitudes de los trabajadores de Aleph Group
+              </h4>
+            </CCardHeader>
+            <CCardBody>
+              <CRow className="mb-3">
+                <CFormLabel htmlFor="colFormLabel" className="col-sm-2 col-form-label">
+                  Buscar un trabajador
+                </CFormLabel>
+                <CCol sm={10}>
+                  <CFormInput
+                    type="email"
+                    id="colFormLabel"
+                    placeholder="busca por nombre o id,etc"
+                  />
+                </CCol>
+              </CRow>
+              <br />
+              <CTable color="dark" align="middle" className="mb-0 border" hover responsive>
                 <CTableHead color="light">
                   <CTableRow>
-                    <CTableHeaderCell className="text-center">
-                    ID
-                    </CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">ID</CTableHeaderCell>
                     <CTableHeaderCell>Empleados</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Asistencias</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Tardanzas</CTableHeaderCell>
@@ -102,7 +105,7 @@ const UsersAttendanceList = () => {
                   {attendanceUpdated?.dataAttendance.map((item) => (
                     <CTableRow v-for="item in tableItems" key={item.uid}>
                       <CTableDataCell className="text-center">
-                      <div>{item.uid}</div>
+                        <div>{item.uid}</div>
                       </CTableDataCell>
                       <CTableDataCell>
                         <div>{item.nameEmployee}</div>
@@ -196,11 +199,10 @@ const UsersAttendanceList = () => {
                   ))}
                 </CTableBody>
               </CTable>
-
-          </CCardBody>
-        </CCard>
-      </CCol>
-    </CRow>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
     </>
   )
 }

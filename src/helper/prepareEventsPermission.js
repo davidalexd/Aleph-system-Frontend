@@ -11,7 +11,8 @@ export const prepareEventsPermission = (permissions = []) => {
     return DateParse
   }
   const NewPermission = permissions.map((e) => {
-    return { ...e, created_at: formaterDate(e.created_at) }
+    return { ...e, created_at: formaterDate(e.created_at)}
   })
   return NewPermission
 }
+//,updated_at:formaterDate(e.updated_at)

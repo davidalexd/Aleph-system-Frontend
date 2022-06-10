@@ -35,13 +35,26 @@ const fetchConToken = (endpoint, data, method = 'GET') => {
     })
   }
 }
-export { fetchConToken, fetchSinToken }
-// if (data.get('excel')) {
-//   return fetch(url, {
-//     method,
-//     headers: {
-//       Authorization: token,
-//     },
-//     body: data,
-//   })
-// }
+
+const fetchArchivoConToken = (endpoint, data, method = 'GET') => {
+  const url = `${BaseUrl}/${endpoint}` //localhost:4000/api/
+  const token = localStorage.getItem('token') || ''
+  if (method === 'GET') {
+    return fetch(url, {
+      method,
+      headers: {
+        Authorization: token,
+      },
+    })
+  } else {
+    return fetch(url, {
+      method,
+      headers: {
+        Authorization: token,
+      },
+      body: data,
+    })
+  }
+}
+
+export { fetchConToken, fetchSinToken, fetchArchivoConToken }
