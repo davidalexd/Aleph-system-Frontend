@@ -18,6 +18,7 @@ const colorStatus ={
   Asistencias:"success",
   Tardanzas:"warning",
   Faltas:"danger",
+  Permisos:"info"
 }
 const WidgetsDropdown = ({dataStadisticits}) => {
   return (
@@ -33,7 +34,7 @@ const WidgetsDropdown = ({dataStadisticits}) => {
                   <>
                     {item.valueMonth}{' '}
                     <span className="fs-6 fw-normal">
-                      ({item.percent}% <CIcon icon={cilArrowBottom} />)
+                      ({item.percent}%)
                     </span>
                   </>
                 }

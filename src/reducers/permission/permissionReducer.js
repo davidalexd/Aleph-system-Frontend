@@ -2,7 +2,8 @@ import { types } from 'src/types/types'
 
 const initialState = {
   permissions: [],
-  activeEvent:null
+  activeEvent: null,
+  dataFilter: [],
 }
 
 export const permissionReducer = (state = initialState, action) => {
@@ -11,19 +12,34 @@ export const permissionReducer = (state = initialState, action) => {
       return {
         ...state,
         activeEvent: action.payload,
-      };
+      }
     case types.eventUpdated:
       return {
         ...state,
         permissions: state.permissions.map((e) =>
-          e.id === action.payload.id ? action.payload : e
+          e.id === action.payload.id ? action.payload : e,
         ),
-      };
+      }
 
     case types.eventLoaded:
       return {
         ...state,
         permissions: [...action.payload],
+      }
+    case types.eventFilter:
+      return {
+        ...state,
+        dataFilter: state.permissions.filter((el) => {
+          if (el.id.toString().toLowerCase().includes(action.payload.toLowerCase())) {
+            return el
+          }
+          if(el.employee_id.toString().toLowerCase().includes(action.payload.toLowerCase())){
+            return el
+          }
+          if(el.reference.toString().toLowerCase().includes(action.payload.toLowerCase())){
+            return el
+          }
+        }),
       }
     default:
       return state

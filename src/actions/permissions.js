@@ -3,6 +3,7 @@ import { filtrarDatos } from 'src/helper/filttrarDatos'
 import { prepareEventsPermission } from 'src/helper/prepareEventsPermission'
 import { types } from 'src/types/types'
 import Swal from 'sweetalert2'
+import { finishLoading, startLoading } from './ui'
 //agregar nuevo permiso
 export const eventStartAddNew = (data) => {
   return async () => {
@@ -15,7 +16,7 @@ export const eventStartAddNew = (data) => {
         Swal.fire({
           icon: 'success',
           title: 'Datos Guardados',
-          text: `Su autorizacion con id ${body.id} ha sido enviada`,
+          text: `Su autorizacion con id ${body.data.id} ha sido enviada`,
         })
       }
     } catch (error) {
@@ -66,12 +67,15 @@ const eventPermissionsLoaded=(permissions)=>({
 })
 export const getPermissions = ()=>{
   return async(dispatch)=>{
+    dispatch(startLoading())
     try{
       const resp =await fetchConToken('permissions');
       const body=await resp.json();
       const permissions = prepareEventsPermission(body.data)
       dispatch(eventPermissionsLoaded(permissions));
+      dispatch(finishLoading())
     }catch(error){
+      dispatch(finishLoading())
       console.log(error)
     }
 
@@ -82,17 +86,25 @@ export const getPermissions = ()=>{
 //traer todos los permisos de un respectivo usuario 
 export const getUserPermissions = ()=>{
   return async(dispatch)=>{
+    dispatch(startLoading())
     try{
       const resp =await fetchConToken('users/permissions');
       const body=await resp.json();
       const permissions = prepareEventsPermission(body.data)
       dispatch(eventPermissionsLoaded(permissions));
+      dispatch(finishLoading())
     }catch(error){
+      dispatch(finishLoading())
       console.log(error)
     }
   }
 }
 
+//filtrar todos los permisos 
+export const eventPermissionsFilter=(permissions)=>({
+  type:types.eventFilter,
+  payload:permissions
+})
 
 
 

@@ -20,15 +20,16 @@ import {
   CTableRow,
 } from '@coreui/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAttendance, startUpdateAttendance } from 'src/actions/attedance'
+import { eventAttendanceFilter, getAttendance, startUpdateAttendance } from 'src/actions/attedance'
 import Swal from 'sweetalert2'
 const initFile = {
   file: '',
 }
 const UsersAttendanceList = () => {
-  const { attendanceUpdated } = useSelector((state) => state.attendance)
+  const { attendances,dataFilter } = useSelector((state) => state.attendance)
   const { loading } = useSelector((state) => state.ui)
   const dispatch = useDispatch()
+  const [valueSearch, setValueSearch] = useState("")
   useEffect(() => {
     dispatch(getAttendance())
   }, [dispatch,loading])
@@ -48,6 +49,14 @@ const UsersAttendanceList = () => {
       })
     }
     dispatch(startUpdateAttendance(files))
+  }
+  const handleSearch =(e)=>{
+    setValueSearch(e.target.value)
+    dispatch(eventAttendanceFilter(e.target.value))
+
+  }
+  if(loading){
+    return<div className="spinner-grow text-primary" role="status"><span className="visually-hidden">Loading...</span></div>
   }
   return (
     <>
@@ -71,7 +80,7 @@ const UsersAttendanceList = () => {
           <CCard className="mb-4">
             <CCardHeader>
               <h4 id="traffic" className="card-title mb-0">
-                Registro de Solicitudes de los trabajadores de Aleph Group
+                Registro de control en los trabajadores de Aleph Group
               </h4>
             </CCardHeader>
             <CCardBody>
@@ -81,8 +90,10 @@ const UsersAttendanceList = () => {
                 </CFormLabel>
                 <CCol sm={10}>
                   <CFormInput
-                    type="email"
-                    id="colFormLabel"
+                    type="text"
+                    name="valueSearch"
+                    value={valueSearch}
+                    onChange={handleSearch}
                     placeholder="busca por nombre o id,etc"
                   />
                 </CCol>
@@ -102,7 +113,7 @@ const UsersAttendanceList = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {attendanceUpdated?.dataAttendance.map((item) => (
+                  {(dataFilter.length>0?dataFilter:attendances).map((item) => (
                     <CTableRow v-for="item in tableItems" key={item.uid}>
                       <CTableDataCell className="text-center">
                         <div>{item.uid}</div>

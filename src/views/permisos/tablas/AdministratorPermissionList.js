@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CBadge,
   CButton,
@@ -19,7 +19,7 @@ import {
 import PermissionModalAdministator from './PermissionModalAdministator'
 import { useDispatch, useSelector } from 'react-redux'
 import { uiOpenModal } from 'src/actions/ui'
-import { eventSetActive, getPermissions } from 'src/actions/permissions'
+import { eventPermissionsFilter, eventSetActive, getPermissions } from 'src/actions/permissions'
 import Moment from 'react-moment'
 import 'moment/locale/es-mx'
 const colorStates = {
@@ -35,18 +35,29 @@ const statesValues = {
 const TiposDeAutorizacion = {
   PERMISO_PERSONAL:'Permiso personal',
   SOLICITUD_HORAS_EXTRAS:'Horas extra',
-  TRABAJO_CAMPO:'Autorizacion para trabajo en campo',
+  TRABAJO_CAMPO:'Trabajo en campo',
   COMPENSACION:'Compensacion de horas',
 }
 const AdministratorPermissionList = () => {
   const dispatch = useDispatch()
-  const { permissions } = useSelector((state) => state.permission);
+  const { permissions,dataFilter } = useSelector((state) => state.permission);
+  const [valueSearch, setValueSearch] = useState("")
+  const { loading } = useSelector((state) => state.ui)
   useEffect(() => {
     dispatch(getPermissions());
   }, [dispatch])
   const handleClickInfoPermisse = (permission) => {
     dispatch(eventSetActive(permission));
     dispatch(uiOpenModal())
+  }
+  const handleSearch =(e)=>{
+    setValueSearch(e.target.value)
+    dispatch(eventPermissionsFilter(e.target.value))
+
+    
+  }
+  if(loading){
+    return<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
   }
   return (
     <CRow>
@@ -64,8 +75,10 @@ const AdministratorPermissionList = () => {
               </CFormLabel>
               <CCol sm={10}>
                 <CFormInput
-                  type="email"
-                  id="colFormLabel"
+                  type="text"
+                  name="valueSearch"
+                  value={valueSearch}
+                  onChange={handleSearch}
                   placeholder="buscar por id, tipo de permisos o estado,etc"
                 />
               </CCol>
@@ -85,7 +98,7 @@ const AdministratorPermissionList = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {permissions?.map((el) => (
+                {(dataFilter.length>0?dataFilter:permissions).map((el) => (
                   <CTableRow key={el.id}>
                     <CTableHeaderCell scope="row">{el.id}</CTableHeaderCell>
                     <CTableDataCell>{el.employee_id}</CTableDataCell>

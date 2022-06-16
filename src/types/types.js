@@ -1,3 +1,5 @@
+import AttendanceList from "src/views/asistencias/tablas/AttendanceList";
+
 export const types = {
   uiSetError: '[UI] Set Error',
   uiRemoveError: '[UI] Remove Error',
@@ -17,5 +19,10 @@ export const types = {
   eventLoaded:'[event] Events Permissions Loaded',
   eventSetActive:'[event] Set active Permission',
   eventUpdated:'[event] Set update State Permission',
-  attendanceUpdate:'[attendance] Attendance update data'
+  eventFilter:'[event] Filter Data Permission',
+
+  attendanceUpdate:'[attendance event] Attendance update data',
+  attendanceFilter:'[attendance event] Attendance filter data',
+  attendanceDashboardUpdate:'[attendance event] Attendance data dashboard',
+  attendanceUser:'[attendance event] Get Attendance user'
 }

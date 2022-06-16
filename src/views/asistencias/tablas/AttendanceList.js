@@ -15,7 +15,9 @@ import {
   CTableRow,
 } from '@coreui/react'
 import { CChartDoughnut } from '@coreui/react-chartjs'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAttendanceUser } from 'src/actions/attedance'
 const data = {
   stadistic: [
     { name: 'asistencias', value: 15 },
@@ -28,26 +30,29 @@ const data = {
     { day: 18, hour: '--', mounth: 'Marzo', status: 'falta' },
   ],
 }
+const colorStatus = {
+  asistencia: 'success',
+  tardanza: 'warning',
+  inasistencia: 'danger',
+}
+const asistencia={
+  asistencia: 'Asistió',
+  tardanza: 'LLegó tarde',
+  inasistencia: 'No se presento',
+}
 const AttendanceList = () => {
+  const dispatch = useDispatch()
+const { myattendances } = useSelector((state) => state.attendance)
+const { loading } = useSelector((state) => state.ui)
+
+  useEffect(() => {
+    dispatch(getAttendanceUser())
+  }, [dispatch])
+if(loading){
+  return<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+}
   return (
     <CRow>
-      {/* <CCol xs={6}>
-        <CCard className="mt-4">
-          <CCardBody>
-            <CChartDoughnut
-              data={{
-                labels: ['ener', 'felbrer'],
-                datasets: [
-                  {
-                    backgroundColor: ['#2eb85c', '#f9b115', '#e55353', '#3399ff'],
-                    data: [1, 2, 3],
-                  },
-                ],
-              }}
-            />
-          </CCardBody>
-        </CCard>
-      </CCol> */}
       <CCol xs={12}>
         <CCard className="mb-4">
           <CRow>
@@ -62,11 +67,11 @@ const AttendanceList = () => {
               <CCardBody>
                 <CChartDoughnut
                   data={{
-                    labels: data?.stadistic.map((el)=>el.name),
+                    labels: myattendances?.stadistic.map((el)=>el.name),
                     datasets: [
                       {
                         backgroundColor: ['#2eb85c', '#f9b115', '#e55353', '#3399ff'],
-                        data: data?.stadistic.map((el)=>el.value),
+                        data: myattendances?.stadistic.map((el)=>el.value),
                       },
                     ],
                   }}
@@ -92,7 +97,7 @@ const AttendanceList = () => {
                 <CTable color="dark" striped>
                   <CTableHead>
                     <CTableRow>
-                      <CTableHeaderCell scope="col">indice</CTableHeaderCell>
+                      <CTableHeaderCell scope="col">#</CTableHeaderCell>
                       <CTableHeaderCell scope="col">Dia</CTableHeaderCell>
                       <CTableHeaderCell scope="col">Mes</CTableHeaderCell>
                       <CTableHeaderCell scope="col">Hora de marcado</CTableHeaderCell>
@@ -101,16 +106,16 @@ const AttendanceList = () => {
                     </CTableRow>
                   </CTableHead>
                   <CTableBody>
-                    {data?.stadisticDays.map((el,index) => (
+                    {myattendances?.stadisticDays.map((el,index) => (
                       <CTableRow key={index}>
-                        <CTableHeaderCell scope="row">1</CTableHeaderCell>
+                        <CTableHeaderCell scope="row">{index}</CTableHeaderCell>
                         <CTableDataCell>{el.day}</CTableDataCell>
                         <CTableDataCell>{el.mounth}</CTableDataCell>
-                        <CTableDataCell>{el.hour}</CTableDataCell>
-                        <CTableDataCell>{el.status}</CTableDataCell>
+                        <CTableDataCell>{el.hour?el.hour:"No marco asistencia"}</CTableDataCell>
+                        <CTableDataCell>  {asistencia[el.status]}</CTableDataCell>
                         <CTableDataCell>
-                          <CBadge color="success" shape="rounded-pill">
-                            Asistencia
+                          <CBadge color={colorStatus[el.status]} shape="rounded-pill">
+                          {el.status}
                           </CBadge>
                         </CTableDataCell>
                       </CTableRow>

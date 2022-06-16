@@ -15,15 +15,15 @@ import { getStyle, hexToRgba } from '@coreui/utils'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import { useDispatch, useSelector } from 'react-redux'
 import {  getAttendance } from 'src/actions/attedance'
-
+const colorStatus = {
+  Asistencias: 'success',
+  Tardanzas: 'warning',
+  Faltas: 'danger',
+  Permisos: 'info',
+}
 const Dashboard = () => {
-  const colorStatus = {
-    Asistencias: 'success',
-    Tardanzas: 'warning',
-    Faltas: 'danger',
-  }
 
-  const { attendanceUpdated } = useSelector((state) => state.attendance)
+  const { dateRegister,dataAllStatistic } = useSelector((state) => state.attendance)
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getAttendance())
@@ -31,7 +31,7 @@ const Dashboard = () => {
   const [graphic, setGraphic] = useState(true)
   return (
     <>
-      <WidgetsDropdown dataStadisticits={attendanceUpdated?.dataAllStatistic} />
+      <WidgetsDropdown dataStadisticits={dataAllStatistic} />
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
@@ -39,7 +39,6 @@ const Dashboard = () => {
               <h4 id="traffic" className="card-title mb-0">
                 Grafico estadistico de asistencias ,tardanzas y empleados
               </h4>
-              <div className="small text-medium-emphasis">{attendanceUpdated?.dateUpdate}</div>
             </CCol>
             <CCol sm={7} className="d-none d-md-block">
               <CButtonGroup className="float-end me-3">
@@ -65,8 +64,8 @@ const Dashboard = () => {
             <CChartLine
               style={{ height: '300px', marginTop: '40px' }}
               data={{
-                labels: attendanceUpdated?.dateRegister.days,
-                datasets: attendanceUpdated?.dataAllStatistic.map((item) => {
+                labels: dateRegister?.days,
+                datasets: dataAllStatistic?.map((item) => {
                   return {
                     label: item.title,
                     backgroundColor: hexToRgba(getStyle(`--cui-${colorStatus[item.title]}`), 10),
@@ -119,15 +118,13 @@ const Dashboard = () => {
                 <CCardBody className="mt-3">
                   <CChartDoughnut
                     data={{
-                      labels: attendanceUpdated?.dataAllStatistic.map((item) => {
-                        return item.title
-                      }),
+                      labels: dataAllStatistic.map((item) => {return item.title}).filter((el)=>el!=="Permisos"),
                       datasets: [
                         {
                           backgroundColor: ['#2eb85c', '#f9b115', '#e55353', '#3399ff'],
-                          data: attendanceUpdated?.dataAllStatistic.map((item) => {
+                          data: dataAllStatistic.map((item) => {
                             return item.percent
-                          }),
+                          }).filter((el,index)=>index!==3),
                         },
                       ],
                     }}
@@ -137,8 +134,8 @@ const Dashboard = () => {
               <CCol sm={6}>
                 <CCardBody>
                   <CRow md={{ cols: 1 }} className="text-center pt-3 pb-5">
-                    {attendanceUpdated?.dataAllStatistic.map((item, index) => (
-                      <CCol key={index} className="mt-3">
+                    {dataAllStatistic.map((item, index) => (
+                      item.title!=="Permisos"&&(<CCol key={index} className="mt-3">
                         <div className="text-medium-emphasis">
                           {graphic
                             ? `Promedio de ${item.title} al mes`
@@ -155,7 +152,7 @@ const Dashboard = () => {
                           color={colorStatus[item.title]}
                           value={item.percent}
                         />
-                      </CCol>
+                      </CCol>)
                     ))}
                   </CRow>
                 </CCardBody>
@@ -165,10 +162,9 @@ const Dashboard = () => {
         </CCardBody>
         {graphic && (
           <CCardFooter>
-            <CRow xs={{ cols: 1 }} md={{ cols: 4 }} className="text-center">
-              {attendanceUpdated &&
-                attendanceUpdated.dataAllStatistic.map((item, index) => (
-                  <CCol className="mb-sm-2 mb-0" key={index}>
+            <CRow xs={{ cols: 1 }} md={{ cols: 3 }} className="text-center">
+              {dataAllStatistic?.map((item, index) => (
+                   item.title==="Permisos"?null:(<CCol className="mb-sm-2 mb-0" key={index}>
                     <div className="text-medium-emphasis">
                       {graphic
                         ? `Promedio de ${item.title} al mes`
@@ -176,7 +172,7 @@ const Dashboard = () => {
                     </div>
                     <strong>
                       {graphic
-                        ? Math.round(item.valueMonth / item.valuesXdays.length)
+                        ? (Math.round(item.valueMonth / item.valuesXdays.length))
                         : `${item.percent}%`}
                     </strong>
                     <CProgress
@@ -185,7 +181,7 @@ const Dashboard = () => {
                       color={colorStatus[item.title]}
                       value={item.percent}
                     />
-                  </CCol>
+                  </CCol>)
                 ))}
             </CRow>
           </CCardFooter>

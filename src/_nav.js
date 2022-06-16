@@ -66,8 +66,57 @@ const _nav = [
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
   {
-    component: CNavTitle,
-    name: 'Configuraciones',
+    component: CNavItem,
+    name: 'Tareas o eventos',
+    to: '/widgets',
+    icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavGroup,
+    name: 'Calendario',
+    icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Form Control',
+        to: '/forms/form-control',
+      },
+      {
+        component: CNavItem,
+        name: 'Select',
+        to: '/forms/select',
+      },
+      {
+        component: CNavItem,
+        name: 'Checks & Radios',
+        to: '/forms/checks-radios',
+      },
+      {
+        component: CNavItem,
+        name: 'Range',
+        to: '/forms/range',
+      },
+      {
+        component: CNavItem,
+        name: 'Input Group',
+        to: '/forms/input-group',
+      },
+      {
+        component: CNavItem,
+        name: 'Floating Labels',
+        to: '/forms/floating-labels',
+      },
+      {
+        component: CNavItem,
+        name: 'Layout',
+        to: '/forms/layout',
+      },
+      {
+        component: CNavItem,
+        name: 'Validation',
+        to: '/forms/validation',
+      },
+    ],
   },
   {
     component: CNavGroup,
@@ -148,6 +197,11 @@ const _nav = [
     ],
   },
   {
+    component: CNavTitle,
+    name: 'Configuraciones',
+  },
+
+  {
     component: CNavGroup,
     name: 'Configuraciones',
     to: '/buttons',
@@ -167,53 +221,6 @@ const _nav = [
         component: CNavItem,
         name: 'Dropdowns',
         to: '/buttons/dropdowns',
-      },
-    ],
-  },
-  {
-    component: CNavGroup,
-    name: 'Calendario',
-    icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Form Control',
-        to: '/forms/form-control',
-      },
-      {
-        component: CNavItem,
-        name: 'Select',
-        to: '/forms/select',
-      },
-      {
-        component: CNavItem,
-        name: 'Checks & Radios',
-        to: '/forms/checks-radios',
-      },
-      {
-        component: CNavItem,
-        name: 'Range',
-        to: '/forms/range',
-      },
-      {
-        component: CNavItem,
-        name: 'Input Group',
-        to: '/forms/input-group',
-      },
-      {
-        component: CNavItem,
-        name: 'Floating Labels',
-        to: '/forms/floating-labels',
-      },
-      {
-        component: CNavItem,
-        name: 'Layout',
-        to: '/forms/layout',
-      },
-      {
-        component: CNavItem,
-        name: 'Validation',
-        to: '/forms/validation',
       },
     ],
   },
@@ -276,13 +283,6 @@ const _nav = [
       },
     ],
   },
-  {
-    component: CNavItem,
-    name: 'Tareas o eventos',
-    to: '/widgets',
-    icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
-  },
-
 ]
 export default _nav
 // {

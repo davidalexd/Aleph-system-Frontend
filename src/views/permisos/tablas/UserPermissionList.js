@@ -41,12 +41,16 @@ const statesValues = {
 const UserPermissionList = () => {
   const dispatch = useDispatch()
   const { permissions } = useSelector((state) => state.permission);
+  const { loading } = useSelector((state) => state.ui)
   useEffect(() => {
     dispatch(getUserPermissions());
   }, [dispatch])
   const handleClickInfoPermisse = (permission) => {
     dispatch(eventSetActive(permission));
     dispatch(uiOpenModal())
+  }
+  if(loading){
+    return<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
   }
 
   return (

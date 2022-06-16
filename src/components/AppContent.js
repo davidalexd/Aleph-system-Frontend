@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 //rutas administrador
 const rutesAdmistrator = ['Listado General de Permisos', 'Listado General de Asistencias','Dashboard']
 //rutas usuario
-const rutesEmployee = ['Formulario de Permisos','Listado de mis Permisos']
+const rutesEmployee = ['Formulario de Permisos','Listado de mis Permisos','Listado de mis Asistencias']
 const AppContent = () => {
   const { role } = useSelector((state) => state.auth)
   return (

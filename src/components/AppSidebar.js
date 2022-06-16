@@ -16,7 +16,7 @@ import navigation from '../_nav'
 //rutas administrador
 const rutesAdmistrator = ['Solicitudes de usuarios', 'Asistencias de usuarios','Dashboard']
 //rutas usuario
-const rutesEmployee = ['Mis solicitudes', 'Formulario de permisos']
+const rutesEmployee = ['Mis solicitudes', 'Formulario de permisos','Mis Asistencias']
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)

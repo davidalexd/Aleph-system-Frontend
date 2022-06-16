@@ -21,8 +21,6 @@ export const startUpdateAttendance = (data) => {
           title: 'Datos Actualizados',
           text: body.message,
         })
-        
-        dispatch(finishLoading())
       }
       dispatch(finishLoading())
     } catch (error) {
@@ -36,27 +34,70 @@ export const startUpdateAttendance = (data) => {
   }
 }
 
-export const Update = (data) => ({
+const Update = (data) => ({
   type: types.attendanceUpdate,
+  payload: data,
+})
+
+
+const UpdateDashboard = (data) => ({
+  type: types.attendanceDashboardUpdate,
   payload: data,
 })
 
 
 export const getAttendance = ()=>{
   return async(dispatch)=>{
+    //dispatch(startLoading())
     try{
       const resp = await fetchConToken('attendances');
       const body= await resp.json();
       if(body.data){
-        dispatch(Update({ attendanceUpdated: body.data }))
+        const {dataAttendance,dateRegister,dataAllStatistic}=body.data
+        dispatch(Update(dataAttendance))
+        dispatch(UpdateDashboard({dateRegister,dataAllStatistic}))
       }else{
         console.log('error hable con el administrador')
       }
+      //dispatch(finishLoading())
     }catch(error){
+
       console.log(error)
     }
 
   }
 }
+
+const updateUser=(data)=>({
+  type:types.attendanceUser,
+  payload:data
+})
+export const getAttendanceUser= ()=>{
+  return async(dispatch)=>{
+    dispatch(startLoading())
+    try{
+
+      const resp = await fetchConToken('attendances/user');
+      const body= await resp.json();
+      if(body){
+        dispatch(updateUser(body))
+      }else{
+        console.log('error hable con el administrador')
+      }
+      dispatch(finishLoading())
+    }catch(error){
+      dispatch(finishLoading())
+      console.log(error)
+    }
+
+  }
+}
+
+
+
+export const eventAttendanceFilter = (attendances) => ({
+  type: types.attendanceFilter,
+  payload: attendances,
+})
 
 export const checkingFininsh = ()=>({type:types.authCheckingFinish})
