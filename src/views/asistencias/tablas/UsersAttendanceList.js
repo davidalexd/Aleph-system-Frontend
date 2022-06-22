@@ -26,7 +26,7 @@ const initFile = {
   file: '',
 }
 const UsersAttendanceList = () => {
-  const { attendances,dataFilter } = useSelector((state) => state.attendance)
+  const { attendances,dataFilter,dateRegister } = useSelector((state) => state.attendance)
   const { loading } = useSelector((state) => state.ui)
   const dispatch = useDispatch()
   const [valueSearch, setValueSearch] = useState("")
@@ -39,6 +39,10 @@ const UsersAttendanceList = () => {
   const handlerFile = (e) => {
     let file = e.target.files[0]
     setFiles({ ...files, file })
+  }
+  const meses={
+    "17 January":"17 de enero",
+    "17 February":"17 de febrero",
   }
   const handlerUpload = () => {
     if (!files.file) {
@@ -82,6 +86,11 @@ const UsersAttendanceList = () => {
               <h4 id="traffic" className="card-title mb-0">
                 Registro de control en los trabajadores de Aleph Group
               </h4>
+              <CRow>
+                <CFormLabel htmlFor="colFormLabel" className="col-form-label">
+                {dateRegister.days?`Informacion registrada desde el ${meses[dateRegister.days[0]]}  hasta el ${meses[dateRegister.days[dateRegister.days.length-1]]}`:"Sin informacion actualizada"}
+                </CFormLabel>
+              </CRow>
             </CCardHeader>
             <CCardBody>
               <CRow className="mb-3">
@@ -122,7 +131,7 @@ const UsersAttendanceList = () => {
                         <div>{item.nameEmployee}</div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                        <div>{item.assitance}</div>
+                        <div>{item.assitance-item.tardies}</div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
                         <div>{item.tardies}</div>
@@ -135,23 +144,18 @@ const UsersAttendanceList = () => {
                           <div className="float-start">
                             <strong>
                               {Math.round(
-                                (item.assitance / (item.assitance + item.tardies + item.absences)) *
+                                ((item.assitance-item.tardies) / (item.assitance + item.absences)) *
                                   100,
                               )}
                               %
                             </strong>
-                          </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">
-                              Jun 11, 2021 - Jul 10, 2021
-                            </small>
                           </div>
                         </div>
                         <CProgress
                           thin
                           color={'success'}
                           value={Math.round(
-                            (item.assitance / (item.assitance + item.tardies + item.absences)) *
+                            ((item.assitance-item.tardies)/ (item.assitance + item.absences)) *
                               100,
                           )}
                         />
@@ -161,23 +165,18 @@ const UsersAttendanceList = () => {
                           <div className="float-start">
                             <strong>
                               {Math.round(
-                                (item.tardies / (item.assitance + item.tardies + item.absences)) *
+                                (item.tardies / (item.assitance + item.absences)) *
                                   100,
                               )}
                               %
                             </strong>
-                          </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">
-                              Jun 11, 2021 - Jul 10, 2021
-                            </small>
                           </div>
                         </div>
                         <CProgress
                           thin
                           color={'warning'}
                           value={Math.round(
-                            (item.tardies / (item.assitance + item.tardies + item.absences)) * 100,
+                            (item.tardies / (item.assitance + item.absences)) * 100,
                           )}
                         />
                       </CTableDataCell>
@@ -186,23 +185,18 @@ const UsersAttendanceList = () => {
                           <div className="float-start">
                             <strong>
                               {Math.round(
-                                (item.absences / (item.assitance + item.tardies + item.absences)) *
+                                (item.absences / (item.assitance + item.absences)) *
                                   100,
                               )}
                               %
                             </strong>
-                          </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">
-                              Jun 11, 2021 - Jul 10, 2021
-                            </small>
                           </div>
                         </div>
                         <CProgress
                           thin
                           color={'danger'}
                           value={Math.round(
-                            (item.absences / (item.assitance + item.tardies + item.absences)) * 100,
+                            (item.absences / (item.assitance + item.absences)) * 100,
                           )}
                         />
                       </CTableDataCell>

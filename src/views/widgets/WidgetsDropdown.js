@@ -34,7 +34,7 @@ const WidgetsDropdown = ({dataStadisticits}) => {
                   <>
                     {item.valueMonth}{' '}
                     <span className="fs-6 fw-normal">
-                      ({item.percent}%)
+                      {item.title=="Permisos"?`(${item.percent} % permisos aceptados)`:`(${item.percent} %)`}
                     </span>
                   </>
                 }

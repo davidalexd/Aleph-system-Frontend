@@ -57,7 +57,7 @@ const AdministratorPermissionList = () => {
     
   }
   if(loading){
-    return<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+    return<div className="spinner-grow text-primary" role="status"><span className="visually-hidden">Loading...</span></div>
   }
   return (
     <CRow>
@@ -65,7 +65,7 @@ const AdministratorPermissionList = () => {
         <CCard className="mb-4">
           <CCardHeader>
             <h4 id="traffic" className="card-title mb-0">
-              Registro de Solicitudes de los trabajadores de Aleph Group
+              Registro de Permisos de los trabajadores de Aleph Group
             </h4>
           </CCardHeader>
           <CCardBody>

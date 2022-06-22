@@ -50,7 +50,7 @@ const UserPermissionList = () => {
     dispatch(uiOpenModal())
   }
   if(loading){
-    return<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+    return<div className="spinner-grow text-primary" role="status"><span className="visually-hidden">Loading...</span></div>
   }
 
   return (

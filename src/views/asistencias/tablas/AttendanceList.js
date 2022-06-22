@@ -49,7 +49,7 @@ const { loading } = useSelector((state) => state.ui)
     dispatch(getAttendanceUser())
   }, [dispatch])
 if(loading){
-  return<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+  return<div className="spinner-grow text-primary" role="status"><span className="visually-hidden">Loading...</span></div>
 }
   return (
     <CRow>
@@ -110,7 +110,7 @@ if(loading){
                       <CTableRow key={index}>
                         <CTableHeaderCell scope="row">{index}</CTableHeaderCell>
                         <CTableDataCell>{el.day}</CTableDataCell>
-                        <CTableDataCell>{el.mounth}</CTableDataCell>
+                        <CTableDataCell>{el.month}</CTableDataCell>
                         <CTableDataCell>{el.hour?el.hour:"No marco asistencia"}</CTableDataCell>
                         <CTableDataCell>  {asistencia[el.status]}</CTableDataCell>
                         <CTableDataCell>

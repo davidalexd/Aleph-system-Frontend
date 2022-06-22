@@ -64,7 +64,7 @@ const Dashboard = () => {
             <CChartLine
               style={{ height: '300px', marginTop: '40px' }}
               data={{
-                labels: dateRegister?.days,
+                labels: dateRegister?.days?.filter((el,index)=>index<27),
                 datasets: dataAllStatistic?.map((item) => {
                   return {
                     label: item.title,
@@ -147,7 +147,7 @@ const Dashboard = () => {
                             : `${item.percent}%`}
                         </strong>
                         <CProgress
-                          solid
+                          solid="true"
                           className="mt-5 mb-3"
                           color={colorStatus[item.title]}
                           value={item.percent}

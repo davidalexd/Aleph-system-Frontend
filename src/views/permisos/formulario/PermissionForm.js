@@ -22,6 +22,7 @@ const TiposDeAutorizacion = [
   'Autorizacion para trabajo en campo',
   'Compensacion de horas',
 ]
+import './tagInputComponent.css'
 const tipoDeDescuento = ['Con descuento', 'Sin descuento']
 const now = moment().minutes(0).seconds(0).add(1, 'hours')
 const nowPlus1 = now.clone().add(1, 'hours')
