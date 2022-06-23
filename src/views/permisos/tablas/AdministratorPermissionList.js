@@ -53,8 +53,6 @@ const AdministratorPermissionList = () => {
   const handleSearch =(e)=>{
     setValueSearch(e.target.value)
     dispatch(eventPermissionsFilter(e.target.value))
-
-    
   }
   if(loading){
     return<div className="spinner-grow text-primary" role="status"><span className="visually-hidden">Loading...</span></div>

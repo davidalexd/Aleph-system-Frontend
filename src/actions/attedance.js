@@ -100,4 +100,14 @@ export const eventAttendanceFilter = (attendances) => ({
   payload: attendances,
 })
 
+//filtrar todos los permisos 
+export const eventUserAttendanceFilter=(attendancesUser)=>({
+  type:types.myattendanceFilter,
+  payload:attendancesUser
+})
+
+
+
+
+
 export const checkingFininsh = ()=>({type:types.authCheckingFinish})

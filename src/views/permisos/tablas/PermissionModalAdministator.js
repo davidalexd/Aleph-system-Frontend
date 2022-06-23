@@ -477,10 +477,10 @@ const PermissionModalAdministator = () => {
           </CForm>
         </CModalBody>
         <CModalFooter>
-          <CButton color="success" onClick={() => handleState(formValues, true)}>
+          <CButton color="success" disabled={(state==="ACCEPTED" || state==="REJECTED")?true:false} onClick={() => handleState(formValues, true)}>
             AUTORIZAR PERMISO
           </CButton>
-          <CButton color="danger" onClick={() => handleState(formValues, false)}>
+          <CButton color="danger" disabled={(state==="ACCEPTED" || state==="REJECTED")?true:false} onClick={() => handleState(formValues, false)}>
             DENEGAR PERMISO
           </CButton>
         </CModalFooter>

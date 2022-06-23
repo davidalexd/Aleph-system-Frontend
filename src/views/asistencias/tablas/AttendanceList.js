@@ -15,9 +15,9 @@ import {
   CTableRow,
 } from '@coreui/react'
 import { CChartDoughnut } from '@coreui/react-chartjs'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAttendanceUser } from 'src/actions/attedance'
+import { eventUserAttendanceFilter, getAttendanceUser } from 'src/actions/attedance'
 const colorStatus = {
   asistencia: 'success',
   tardanza: 'warning',
@@ -30,12 +30,17 @@ const asistencia={
 }
 const AttendanceList = () => {
   const dispatch = useDispatch()
-const { myattendances } = useSelector((state) => state.attendance)
+const { myattendances,stadisticDaysFilter } = useSelector((state) => state.attendance)
 const { loading } = useSelector((state) => state.ui)
+const [valueSearch, setValueSearch] = useState("")
 
   useEffect(() => {
     dispatch(getAttendanceUser())
   }, [dispatch])
+  const handleSearch =(e)=>{
+    setValueSearch(e.target.value)
+    dispatch(eventUserAttendanceFilter(e.target.value))
+  }
 if(loading){
   return<div className="spinner-grow text-primary" role="status"><span className="visually-hidden">Loading...</span></div>
 }
@@ -75,7 +80,9 @@ if(loading){
                   <CCol sm={7}>
                     <CFormInput
                       type="email"
-                      id="colFormLabel"
+                      name="valueSearch"
+                      value={valueSearch}
+                      onChange={handleSearch}
                       placeholder="buscar asistencias o tardanzas por dias,etc"
                     />
                   </CCol>
@@ -94,7 +101,7 @@ if(loading){
                     </CTableRow>
                   </CTableHead>
                   <CTableBody>
-                    {myattendances?.stadisticDays.map((el,index) => (
+                    {(stadisticDaysFilter.length>0?stadisticDaysFilter:myattendances?.stadisticDays).map((el,index) => (
                       <CTableRow key={index}>
                         <CTableHeaderCell scope="row">{index}</CTableHeaderCell>
                         <CTableDataCell>{el.day}</CTableDataCell>

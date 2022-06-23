@@ -4,9 +4,10 @@ const initialState = {
   checking: true,
   attendances: [],
   dataFilter: [],
-  myattendances:{stadistic:[],stadisticDays:[]},
-  dateRegister:[]
-  ,dataAllStatistic:[]
+  myattendances: { stadistic: [], stadisticDays: [] },
+  stadisticDaysFilter: [],
+  dateRegister: [],
+  dataAllStatistic: [],
 }
 export const attendanceReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -28,17 +29,29 @@ export const attendanceReducer = (state = initialState, action) => {
           }
         }),
       }
-
+    case types.myattendanceFilter:
+      const { myattendances:{stadisticDays}} = state
+      return {
+        ...state,
+        stadisticDaysFilter: stadisticDays.filter((el) => {
+          if (el.day.toString().toLowerCase().includes(action.payload.toLowerCase())) {
+            return el
+          }
+          if (el.month.toString().toLowerCase().includes(action.payload.toLowerCase())) {
+            return el
+          }
+        }),
+      }
     case types.attendanceDashboardUpdate:
       return {
         ...state,
         ...action.payload,
       }
-      case types.attendanceUser:
-        return {
-          ...state,
-          myattendances:action.payload,
-        }
+    case types.attendanceUser:
+      return {
+        ...state,
+        myattendances: action.payload,
+      }
     default:
       return state
   }

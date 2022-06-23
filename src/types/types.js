@@ -22,6 +22,7 @@ export const types = {
 
   attendanceUpdate:'[attendance event] Attendance update data',
   attendanceFilter:'[attendance event] Attendance filter data',
+  myattendanceFilter:'[attendance event] Attendance User filter',
   attendanceDashboardUpdate:'[attendance event] Attendance data dashboard',
   attendanceUser:'[attendance event] Get Attendance user'
 }

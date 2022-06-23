@@ -64,7 +64,7 @@ const PermissionForm = () => {
   const [dateEnd, setDateEnd] = useState(nowPlus1.toDate())
   const [descount, setDescount] = useState(tipoDeDescuento[0])
   const [typePermission, setTypePermission] = useState(TiposDeAutorizacion[0])
-  const [selected, setSelected] = useState(['Solucionar errores'])
+  const [selected, setSelected] = useState([])
 
   const handleCreateDateChange = (e) => {
     setDateCreate(e)
@@ -80,12 +80,12 @@ const PermissionForm = () => {
     let nowEnd = nowChange.clone().add(1, 'hours')
     setDateEnd(nowEnd.toDate())
     let hour = (nowEnd.toDate().getTime() - e.getTime()) / (1000 * 60 * 60)
-    setFormValues({ ...formValues, startEvent: e, quantityHours: hour, endEvent: nowEnd.toDate() })
+    setFormValues({ ...formValues, startEvent: e, quantityHours: Math.round(hour), endEvent: nowEnd.toDate() })
   }
   const handleEndDateChange = (e) => {
     setDateEnd(e)
     let hour = (e.getTime() - startEvent.getTime()) / (1000 * 60 * 60)
-    setFormValues({ ...formValues, endEvent: e, quantityHours: hour })
+    setFormValues({ ...formValues, endEvent: e, quantityHours: Math.round(hour)})
   }
   const handleInputChange = ({ target }) => {
     setFormValues({
