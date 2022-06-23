@@ -1,4 +1,3 @@
-import AttendanceList from "src/views/asistencias/tablas/AttendanceList";
 
 export const types = {
   uiSetError: '[UI] Set Error',

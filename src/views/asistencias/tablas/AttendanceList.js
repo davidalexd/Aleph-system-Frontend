@@ -18,18 +18,6 @@ import { CChartDoughnut } from '@coreui/react-chartjs'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAttendanceUser } from 'src/actions/attedance'
-const data = {
-  stadistic: [
-    { name: 'asistencias', value: 15 },
-    { name: 'tardanzas', value: 15 },
-    { name: 'faltas', value: 15 },
-  ],
-  stadisticDays: [
-    { day: 16, hour: '10:00AM', mounth: 'Marzo', status: 'tardanza' },
-    { day: 17, hour: '7:00AM', mounth: 'Marzo', status: 'asistencia' },
-    { day: 18, hour: '--', mounth: 'Marzo', status: 'falta' },
-  ],
-}
 const colorStatus = {
   asistencia: 'success',
   tardanza: 'warning',
