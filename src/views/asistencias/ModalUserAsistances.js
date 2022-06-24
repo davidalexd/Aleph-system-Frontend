@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAttendanceUser } from 'src/actions/attedance'
 import { uiCloseModal } from 'src/actions/ui'
+import { LoaderTables } from 'src/components/loader/LoaderTables'
 import CardBodyAttendanceList from './tablas/CardBodyAttendanceList'
 
 const ModalUserAsistances = ({userSelected}) => {
-    const { modalOpen } = useSelector((state) => state.ui)
+    const { modalOpen,loading } = useSelector((state) => state.ui)
     const dispatch = useDispatch()
     useEffect(() => {
         if(userSelected.id){
@@ -24,7 +25,7 @@ const ModalUserAsistances = ({userSelected}) => {
         <CModalTitle>{`Detalle diario del trabajador ${userSelected.name}`}</CModalTitle>
       </CModalHeader>
       <CModalBody>
-       <CardBodyAttendanceList columna={12}/>
+       {loading?<LoaderTables/>:(<CardBodyAttendanceList columna={12}/>)}
       </CModalBody>
       <CModalFooter>
         <CButton color="primary" onClick={() => closeModal()}>Cerrar</CButton>

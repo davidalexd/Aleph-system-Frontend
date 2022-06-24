@@ -48,7 +48,7 @@ const UpdateDashboard = (data) => ({
 
 export const getAttendance = ()=>{
   return async(dispatch)=>{
-    //dispatch(startLoading())
+    dispatch(startLoading())
     try{
       const resp = await fetchConToken('attendances');
       const body= await resp.json();
@@ -59,7 +59,7 @@ export const getAttendance = ()=>{
       }else{
         console.log('error hable con el administrador')
       }
-      //dispatch(finishLoading())
+      dispatch(finishLoading())
     }catch(error){
 
       console.log(error)
@@ -74,7 +74,7 @@ const updateUser=(data)=>({
 })
 export const getAttendanceUser= (idUser=null)=>{
   return async(dispatch)=>{
-    //dispatch(startLoading())
+    dispatch(startLoading())
     try{
       if(idUser){
         const resp = await fetchConToken(`attendances/user/${idUser}`);
@@ -89,9 +89,9 @@ export const getAttendanceUser= (idUser=null)=>{
           dispatch(updateUser(body))
         }
       }
-      //dispatch(finishLoading())
+      dispatch(finishLoading())
     }catch(error){
-      //dispatch(finishLoading())
+      dispatch(finishLoading())
       console.log(error)
     }
 

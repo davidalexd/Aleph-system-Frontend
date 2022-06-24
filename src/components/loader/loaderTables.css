@@ -1,0 +1,28 @@
+.container-table{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+}
+.content-loader{
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+}
+.message-spinner{
+    color: rgb(60,76,99);
+    animation: message 0.4s alternate infinite ease-in-out;
+
+}
+@keyframes message-spinner{
+    0%{
+        opacity: .2;
+    }
+    100%{
+        opacity: 1;
+    }
+
+}

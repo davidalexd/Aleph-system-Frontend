@@ -22,6 +22,7 @@ import { uiOpenModal } from 'src/actions/ui'
 import { eventSetActive, getUserPermissions } from 'src/actions/permissions'
 import Moment from 'react-moment'
 import 'moment/locale/es-mx'
+import { LoaderTables } from 'src/components/loader/LoaderTables'
 const TiposDeAutorizacion = {
   PERMISO_PERSONAL:'Permiso personal',
   SOLICITUD_HORAS_EXTRAS:'Horas extra',
@@ -49,10 +50,6 @@ const UserPermissionList = () => {
     dispatch(eventSetActive(permission));
     dispatch(uiOpenModal())
   }
-  if(loading){
-    return<div className="spinner-grow text-primary" role="status"><span className="visually-hidden">Loading...</span></div>
-  }
-
   return (
     <>
       <CRow>
@@ -78,7 +75,7 @@ const UserPermissionList = () => {
               </CRow>
               <br />
 
-              <CTable color="dark" striped>
+              {loading?(<LoaderTables/>):(<CTable color="dark" striped>
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">Id de autorizacion</CTableHeaderCell>
@@ -115,7 +112,7 @@ const UserPermissionList = () => {
                     </CTableRow>
                   ))}
                 </CTableBody>
-              </CTable>
+              </CTable>)}
             </CCardBody>
           </CCard>
         </CCol>

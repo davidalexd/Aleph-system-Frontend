@@ -18,18 +18,18 @@ import { CChartDoughnut } from '@coreui/react-chartjs'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAttendanceUser } from 'src/actions/attedance'
+import { LoaderTables } from 'src/components/loader/LoaderTables'
 import CardBodyAttendanceList from './CardBodyAttendanceList'
 
 const AttendanceList = () => {
   const dispatch = useDispatch()
-const { myattendances:{stadistic}} = useSelector((state) => state.attendance)
-const { loading } = useSelector((state) => state.ui)
+  const {
+    myattendances: { stadistic },
+  } = useSelector((state) => state.attendance)
+  const { loading } = useSelector((state) => state.ui)
   useEffect(() => {
     dispatch(getAttendanceUser())
   }, [dispatch])
-if(loading){
-  return<div className="spinner-grow text-primary" role="status"><span className="visually-hidden">Loading...</span></div>
-}
   return (
     <CRow>
       <CCol xs={12}>
@@ -42,22 +42,28 @@ if(loading){
                 </h4>
               </CCardHeader>
             </CCol>
-            <CCol md={6}>
-              <CCardBody>
-                <CChartDoughnut
-                  data={{
-                    labels: stadistic.map((el)=>el.name),
-                    datasets: [
-                      {
-                        backgroundColor: ['#2eb85c', '#f9b115', '#e55353', '#3399ff'],
-                        data: stadistic.map((el)=>el.value),
-                      },
-                    ],
-                  }}
-                />
-              </CCardBody>
-            </CCol>
-            <CardBodyAttendanceList columna={6}/>
+            {loading ? (
+              <LoaderTables />
+            ) : (
+              <>
+                <CCol md={6}>
+                  <CCardBody>
+                    <CChartDoughnut
+                      data={{
+                        labels: stadistic.map((el) => el.name),
+                        datasets: [
+                          {
+                            backgroundColor: ['#2eb85c', '#f9b115', '#e55353', '#3399ff'],
+                            data: stadistic.map((el) => el.value),
+                          },
+                        ],
+                      }}
+                    />
+                  </CCardBody>
+                </CCol>
+                <CardBodyAttendanceList columna={6} />
+              </>
+            )}
           </CRow>
         </CCard>
       </CCol>

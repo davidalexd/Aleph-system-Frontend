@@ -12,6 +12,7 @@ import {
   CFormLabel,
   CProgress,
   CRow,
+  CSpinner,
   CTable,
   CTableBody,
   CTableDataCell,
@@ -24,22 +25,25 @@ import { eventAttendanceFilter, getAttendance, startUpdateAttendance } from 'src
 import Swal from 'sweetalert2'
 import ModalUserAsistances from '../ModalUserAsistances'
 import { uiOpenModal } from 'src/actions/ui'
+import { LoaderTables } from 'src/components/loader/LoaderTables'
 const initFile = {
   file: '',
 }
-const initialUser={
-  id:"",
-  name:""
+const initialUser = {
+  id: '',
+  name: '',
 }
 const UsersAttendanceList = () => {
-  const { attendances,dataFilter,dateRegister,checking } = useSelector((state) => state.attendance)
+  const { attendances, dataFilter, dateRegister, checking } = useSelector(
+    (state) => state.attendance,
+  )
   const { loading } = useSelector((state) => state.ui)
   const dispatch = useDispatch()
-  const [valueSearch, setValueSearch] = useState("")
+  const [valueSearch, setValueSearch] = useState('')
   const [userSelected, setUserSelected] = useState(initialUser)
   useEffect(() => {
     dispatch(getAttendance())
-  }, [dispatch,checking])
+  }, [dispatch, checking])
 
   const [files, setFiles] = useState(initFile)
 
@@ -47,9 +51,9 @@ const UsersAttendanceList = () => {
     let file = e.target.files[0]
     setFiles({ ...files, file })
   }
-  const meses={
-    "17 January":"17 de enero",
-    "17 February":"17 de febrero",
+  const meses = {
+    '17 January': '17 de enero',
+    '17 February': '17 de febrero',
   }
   const handlerUpload = () => {
     if (!files.file) {
@@ -61,17 +65,13 @@ const UsersAttendanceList = () => {
     }
     dispatch(startUpdateAttendance(files))
   }
-  const handleSearch =(e)=>{
+  const handleSearch = (e) => {
     setValueSearch(e.target.value)
     dispatch(eventAttendanceFilter(e.target.value))
-
   }
   const handleClickInfoAsistences = (user) => {
-    setUserSelected({...userSelected,id:user.id,name:user.name})
+    setUserSelected({ ...userSelected, id: user.id, name: user.name })
     dispatch(uiOpenModal())
-  }
-  if(loading){
-    return<div className="spinner-grow text-primary" role="status"><span className="visually-hidden">Loading...</span></div>
   }
   return (
     <>
@@ -99,7 +99,11 @@ const UsersAttendanceList = () => {
               </h4>
               <CRow>
                 <CFormLabel htmlFor="colFormLabel" className="col-form-label">
-                {dateRegister.days?`Informacion registrada desde el ${meses[dateRegister.days[0]]}  hasta el ${meses[dateRegister.days[dateRegister.days.length-1]]}`:"Sin informacion actualizada"}
+                  {dateRegister.days
+                    ? `Informacion registrada desde el ${meses[dateRegister.days[0]]}  hasta el ${
+                        meses[dateRegister.days[dateRegister.days.length - 1]]
+                      }`
+                    : 'Sin informacion actualizada'}
                 </CFormLabel>
               </CRow>
             </CCardHeader>
@@ -119,112 +123,121 @@ const UsersAttendanceList = () => {
                 </CCol>
               </CRow>
               <br />
-              <CTable color="dark" align="middle" className="mb-0 border" hover responsive>
-                <CTableHead color="light">
-                  <CTableRow>
-                    <CTableHeaderCell className="text-center">ID</CTableHeaderCell>
-                    <CTableHeaderCell>Empleados</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Asistencias</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Tardanzas</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Ausencias</CTableHeaderCell>
-                    <CTableHeaderCell>% Asistencias</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">% Tardanzas</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">% Ausencias</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Detalles</CTableHeaderCell>
-                  </CTableRow>
-                </CTableHead>
-                <CTableBody>
-                  {(dataFilter.length>0?dataFilter:attendances).map((item) => (
-                    <CTableRow v-for="item in tableItems" key={item.uid}>
-                      <CTableDataCell className="text-center">
-                        <div>{item.uid}</div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div>{item.nameEmployee}</div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <div>{item.assitance-item.tardies}</div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <div>{item.tardies}</div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <div>{item.absences}</div>
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            <strong>
-                              {Math.round(
-                                ((item.assitance-item.tardies) / (item.assitance + item.absences)) *
-                                  100,
-                              )}
-                              %
-                            </strong>
-                          </div>
-                        </div>
-                        <CProgress
-                          thin
-                          color={'success'}
-                          value={Math.round(
-                            ((item.assitance-item.tardies)/ (item.assitance + item.absences)) *
-                              100,
-                          )}
-                        />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            <strong>
-                              {Math.round(
-                                (item.tardies / (item.assitance + item.absences)) *
-                                  100,
-                              )}
-                              %
-                            </strong>
-                          </div>
-                        </div>
-                        <CProgress
-                          thin
-                          color={'warning'}
-                          value={Math.round(
-                            (item.tardies / (item.assitance + item.absences)) * 100,
-                          )}
-                        />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            <strong>
-                              {Math.round(
-                                (item.absences / (item.assitance + item.absences)) *
-                                  100,
-                              )}
-                              %
-                            </strong>
-                          </div>
-                        </div>
-                        <CProgress
-                          thin
-                          color={'danger'}
-                          value={Math.round(
-                            (item.absences / (item.assitance + item.absences)) * 100,
-                          )}
-                        />
-                      </CTableDataCell>
-                      <CTableDataCell>
-                      <CButton color="primary" variant="outline"  onClick={()=>handleClickInfoAsistences({id:item.uid,name:item.nameEmployee})}>
-                        Ver detalles
-                      </CButton>
-                    </CTableDataCell>
+              {loading ? (
+                <LoaderTables />
+              ) : (
+                <CTable color="dark" align="middle" className="mb-0 border" hover responsive>
+                  <CTableHead color="light">
+                    <CTableRow>
+                      <CTableHeaderCell className="text-center">ID</CTableHeaderCell>
+                      <CTableHeaderCell>Empleados</CTableHeaderCell>
+                      <CTableHeaderCell className="text-center">Asistencias</CTableHeaderCell>
+                      <CTableHeaderCell className="text-center">Tardanzas</CTableHeaderCell>
+                      <CTableHeaderCell className="text-center">Ausencias</CTableHeaderCell>
+                      <CTableHeaderCell>% Asistencias</CTableHeaderCell>
+                      <CTableHeaderCell className="text-center">% Tardanzas</CTableHeaderCell>
+                      <CTableHeaderCell className="text-center">% Ausencias</CTableHeaderCell>
+                      <CTableHeaderCell className="text-center">Detalles</CTableHeaderCell>
                     </CTableRow>
-                  ))}
-                </CTableBody>
-              </CTable>
+                  </CTableHead>
+                  <CTableBody>
+                    {(dataFilter.length > 0 ? dataFilter : attendances).map((item) => (
+                      <CTableRow v-for="item in tableItems" key={item.uid}>
+                        <CTableDataCell className="text-center">
+                          <div>{item.uid}</div>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div>{item.nameEmployee}</div>
+                        </CTableDataCell>
+                        <CTableDataCell className="text-center">
+                          <div>{item.assitance - item.tardies}</div>
+                        </CTableDataCell>
+                        <CTableDataCell className="text-center">
+                          <div>{item.tardies}</div>
+                        </CTableDataCell>
+                        <CTableDataCell className="text-center">
+                          <div>{item.absences}</div>
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div className="clearfix">
+                            <div className="float-start">
+                              <strong>
+                                {Math.round(
+                                  ((item.assitance - item.tardies) /
+                                    (item.assitance + item.absences)) *
+                                    100,
+                                )}
+                                %
+                              </strong>
+                            </div>
+                          </div>
+                          <CProgress
+                            thin
+                            color={'success'}
+                            value={Math.round(
+                              ((item.assitance - item.tardies) / (item.assitance + item.absences)) *
+                                100,
+                            )}
+                          />
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div className="clearfix">
+                            <div className="float-start">
+                              <strong>
+                                {Math.round(
+                                  (item.tardies / (item.assitance + item.absences)) * 100,
+                                )}
+                                %
+                              </strong>
+                            </div>
+                          </div>
+                          <CProgress
+                            thin
+                            color={'warning'}
+                            value={Math.round(
+                              (item.tardies / (item.assitance + item.absences)) * 100,
+                            )}
+                          />
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <div className="clearfix">
+                            <div className="float-start">
+                              <strong>
+                                {Math.round(
+                                  (item.absences / (item.assitance + item.absences)) * 100,
+                                )}
+                                %
+                              </strong>
+                            </div>
+                          </div>
+                          <CProgress
+                            thin
+                            color={'danger'}
+                            value={Math.round(
+                              (item.absences / (item.assitance + item.absences)) * 100,
+                            )}
+                          />
+                        </CTableDataCell>
+                        <CTableDataCell>
+                          <CButton
+                            color="primary"
+                            variant="outline"
+                            onClick={() =>
+                              handleClickInfoAsistences({ id: item.uid, name: item.nameEmployee })
+                            }
+                          >
+                            Ver detalles
+                          </CButton>
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))}
+                  </CTableBody>
+                </CTable>
+              )}
             </CCardBody>
           </CCard>
         </CCol>
-        <ModalUserAsistances userSelected={userSelected}/>
+        <ModalUserAsistances userSelected={userSelected} />
       </CRow>
     </>
   )
