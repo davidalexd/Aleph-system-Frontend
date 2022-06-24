@@ -2,6 +2,7 @@ import React, { Suspense, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import { login, startChecking } from './actions/auth'
+import LodearSpinner from './components/loader/LodearSpinner'
 import { PrivateRoute } from './routers/PrivateRoute'
 import { PublicRoute } from './routers/PublicRoute'
 import './scss/style.scss'
@@ -30,7 +31,7 @@ const App = () => {
   }, [ dispatch])
 
   if (checking) {
-    return <h1>Esperen...</h1>
+    return <LodearSpinner/>
   }
 
   return (

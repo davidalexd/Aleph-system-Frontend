@@ -4,7 +4,7 @@ import { finishLoading, startLoading } from './ui'
 import Swal from 'sweetalert2'
 export const startUpdateAttendance = (data) => {
   return async (dispatch) => {
-    dispatch(startLoading())
+    dispatch(checkingStart())
     const { file } = data
     let formData = new FormData()
     formData.append('excel', file)
@@ -22,9 +22,9 @@ export const startUpdateAttendance = (data) => {
           text: body.message,
         })
       }
-      dispatch(finishLoading())
+      dispatch(checkingFininsh())
     } catch (error) {
-      dispatch(finishLoading())
+      dispatch(checkingFininsh())
       Swal.fire({
         icon: 'error',
         title: 'Ocurrio un error',
@@ -72,27 +72,33 @@ const updateUser=(data)=>({
   type:types.attendanceUser,
   payload:data
 })
-export const getAttendanceUser= ()=>{
+export const getAttendanceUser= (idUser=null)=>{
   return async(dispatch)=>{
-    dispatch(startLoading())
+    //dispatch(startLoading())
     try{
-
-      const resp = await fetchConToken('attendances/user');
-      const body= await resp.json();
-      if(body){
-        dispatch(updateUser(body))
+      if(idUser){
+        const resp = await fetchConToken(`attendances/user/${idUser}`);
+        const body= await resp.json();
+        if(body){
+          dispatch(updateUser(body))
+        }
       }else{
-        console.log('error hable con el administrador')
+        const resp = await fetchConToken(`attendances/user`);
+        const body= await resp.json();
+        if(body){
+          dispatch(updateUser(body))
+        }
       }
-      dispatch(finishLoading())
+      //dispatch(finishLoading())
     }catch(error){
-      dispatch(finishLoading())
+      //dispatch(finishLoading())
       console.log(error)
     }
 
   }
 }
-
+const checkingStart = ()=>({type:types.attendanceCheckingStart})
+const checkingFininsh = ()=>({type:types.attendanceCheckingFinish})
 
 
 export const eventAttendanceFilter = (attendances) => ({
@@ -100,7 +106,7 @@ export const eventAttendanceFilter = (attendances) => ({
   payload: attendances,
 })
 
-//filtrar todos los permisos 
+//filtrar registros del propio usuario 
 export const eventUserAttendanceFilter=(attendancesUser)=>({
   type:types.myattendanceFilter,
   payload:attendancesUser
@@ -108,6 +114,3 @@ export const eventUserAttendanceFilter=(attendancesUser)=>({
 
 
 
-
-
-export const checkingFininsh = ()=>({type:types.authCheckingFinish})

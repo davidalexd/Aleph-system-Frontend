@@ -1,7 +1,7 @@
 import { types } from 'src/types/types'
 
 const initialState = {
-  checking: true,
+  checking: false,
   attendances: [],
   dataFilter: [],
   myattendances: { stadistic: [], stadisticDays: [] },
@@ -15,7 +15,6 @@ export const attendanceReducer = (state = initialState, action) => {
       return {
         ...state,
         attendances: action.payload,
-        checking: false,
       }
     case types.attendanceFilter:
       return {
@@ -52,6 +51,17 @@ export const attendanceReducer = (state = initialState, action) => {
         ...state,
         myattendances: action.payload,
       }
+      case types.attendanceCheckingStart:
+        return {
+            ...state,
+            checking:true,              
+            }
+      case types.attendanceCheckingFinish:
+        return {
+            ...state,
+            checking:false,              
+            }
+       
     default:
       return state
   }

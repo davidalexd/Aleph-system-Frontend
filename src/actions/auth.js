@@ -1,6 +1,7 @@
 import { types } from 'src/types/types'
 import { finishLoading, startLoading } from './ui'
 import {fetchConToken, fetchSinToken} from '../helper/fetch'
+import Swal from 'sweetalert2'
 
 export const startLoginEmailPassword = (email, password) => {
   return async (dispatch) => {
@@ -8,13 +9,18 @@ export const startLoginEmailPassword = (email, password) => {
     try {
       const resp = await fetchSinToken('auth/login', {email,password},'POST');
       const body = await resp.json();
-    
       if (body.access) {
         const {data,access}=body;
         localStorage.setItem('token',`${access.token_type} ${access.token}`);
         localStorage.setItem('token-init-date',new Date().getTime())
         dispatch(login({uid:data.id,name:`${data.first_name} ${data.last_name}`,role:access.scopes}))
         dispatch(finishLoading())
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Ocurrio un error',
+          text: 'Credenciales invalidas',
+        })
       }
       dispatch(finishLoading())
     } catch (error) {
@@ -23,32 +29,6 @@ export const startLoginEmailPassword = (email, password) => {
     }
   }
 }
-
-
-
-export const startRegisterEmail = (email, password,name) => {
-  return async (dispatch) => {
-    dispatch(startLoading())
-    try {
-      const resp = await fetchSinToken('auth/signup', {email,password,name},'POST');
-      const body = await resp.json();
-      if (body.ok) {
-        localStorage.setItem('token',body.token);
-        localStorage.setItem('token-init-date',new Date().getTime())
-        dispatch(login({uid:body.uid,name:body.name}))
-        dispatch(finishLoading())
-      }else{
-        console.log(body.msg,"error")
-      }
-      dispatch(finishLoading())
-    } catch (error) {
-      dispatch(finishLoading())
-      console.log(error,"usuario no registrado")
-    }
-  }
-}
-
-
 
 
 
@@ -97,3 +77,24 @@ export const startLogout = () => {
 }
 
 
+export const startRegisterEmail = (email, password,name) => {
+  return async (dispatch) => {
+    dispatch(startLoading())
+    try {
+      const resp = await fetchSinToken('auth/signup', {email,password,name},'POST');
+      const body = await resp.json();
+      if (body.ok) {
+        localStorage.setItem('token',body.token);
+        localStorage.setItem('token-init-date',new Date().getTime())
+        dispatch(login({uid:body.uid,name:body.name}))
+        dispatch(finishLoading())
+      }else{
+        console.log(body.msg,"error")
+      }
+      dispatch(finishLoading())
+    } catch (error) {
+      dispatch(finishLoading())
+      console.log(error,"usuario no registrado")
+    }
+  }
+}

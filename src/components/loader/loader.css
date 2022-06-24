@@ -1,0 +1,31 @@
+.container-page{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: rgb(20, 20, 20);
+}
+.container-loader{
+    width: 600px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+}
+/* 50px */
+.message{
+    color: #1e829b;
+    animation: message 1s alternate infinite ease-in-out;
+
+}
+@keyframes message{
+    0%{
+        opacity: .2;
+    }
+    100%{
+        opacity: 1;
+    }
+
+}

@@ -22,17 +22,24 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { eventAttendanceFilter, getAttendance, startUpdateAttendance } from 'src/actions/attedance'
 import Swal from 'sweetalert2'
+import ModalUserAsistances from '../ModalUserAsistances'
+import { uiOpenModal } from 'src/actions/ui'
 const initFile = {
   file: '',
 }
+const initialUser={
+  id:"",
+  name:""
+}
 const UsersAttendanceList = () => {
-  const { attendances,dataFilter,dateRegister } = useSelector((state) => state.attendance)
+  const { attendances,dataFilter,dateRegister,checking } = useSelector((state) => state.attendance)
   const { loading } = useSelector((state) => state.ui)
   const dispatch = useDispatch()
   const [valueSearch, setValueSearch] = useState("")
+  const [userSelected, setUserSelected] = useState(initialUser)
   useEffect(() => {
     dispatch(getAttendance())
-  }, [dispatch,loading])
+  }, [dispatch,checking])
 
   const [files, setFiles] = useState(initFile)
 
@@ -58,6 +65,10 @@ const UsersAttendanceList = () => {
     setValueSearch(e.target.value)
     dispatch(eventAttendanceFilter(e.target.value))
 
+  }
+  const handleClickInfoAsistences = (user) => {
+    setUserSelected({...userSelected,id:user.id,name:user.name})
+    dispatch(uiOpenModal())
   }
   if(loading){
     return<div className="spinner-grow text-primary" role="status"><span className="visually-hidden">Loading...</span></div>
@@ -119,6 +130,7 @@ const UsersAttendanceList = () => {
                     <CTableHeaderCell>% Asistencias</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">% Tardanzas</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">% Ausencias</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center">Detalles</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
@@ -200,6 +212,11 @@ const UsersAttendanceList = () => {
                           )}
                         />
                       </CTableDataCell>
+                      <CTableDataCell>
+                      <CButton color="primary" variant="outline"  onClick={()=>handleClickInfoAsistences({id:item.uid,name:item.nameEmployee})}>
+                        Ver detalles
+                      </CButton>
+                    </CTableDataCell>
                     </CTableRow>
                   ))}
                 </CTableBody>
@@ -207,6 +224,7 @@ const UsersAttendanceList = () => {
             </CCardBody>
           </CCard>
         </CCol>
+        <ModalUserAsistances userSelected={userSelected}/>
       </CRow>
     </>
   )
