@@ -1,4 +1,6 @@
+import moment from 'moment'
 export const prepareEventsPermission = (permissions = []) => {
+
   const formaterDate = (dateCreate) => {
     let fecha = new Date(dateCreate)
     let day = `${fecha.getDate() < 10 ? '0' : ''}${fecha.getDate()}`
@@ -11,8 +13,13 @@ export const prepareEventsPermission = (permissions = []) => {
     return DateParse
   }
   const NewPermission = permissions.map((e) => {
-    return { ...e, created_at: formaterDate(e.created_at)}
+    return {
+      ...e,
+      created_at: formaterDate(e.created_at),
+      end: moment(`${e.permission_date} ${e.estimated_end_time}`).toDate(),
+      start: moment(`${e.permission_date} ${e.estimated_start_time}`).toDate(),
+    }
   })
   return NewPermission
 }
-//,updated_at:formaterDate(e.updated_at)
+

@@ -41,6 +41,12 @@ export const permissionReducer = (state = initialState, action) => {
           }
         }),
       }
+
+      case types.eventClearActive:
+        return {
+          ...state,
+          activeEvent: null,
+        };
     default:
       return state
   }

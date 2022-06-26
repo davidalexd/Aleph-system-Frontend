@@ -15,7 +15,7 @@ import {
 } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { eventStartUpdate } from 'src/actions/permissions'
+import { eventClearActive, eventStartUpdate } from 'src/actions/permissions'
 import { uiCloseModal } from 'src/actions/ui'
 const statesValues = {
   ACCEPTED: 'ACEPTADO',
@@ -74,6 +74,7 @@ const PermissionModalAdministator = () => {
 
   const closeModal = () => {
     dispatch(uiCloseModal())
+    dispatch(eventClearActive())
     //cerrar modal
   }
   const handleState = (permission, value) => {

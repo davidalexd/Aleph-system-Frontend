@@ -106,7 +106,10 @@ export const eventPermissionsFilter=(permissions)=>({
   payload:permissions
 })
 
-
+//eliminar evento seleccionado
+export const eventClearActive = () => ({
+  type: types.eventClearActive,
+});
 
 
 

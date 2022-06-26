@@ -73,6 +73,12 @@ const _nav = [
     icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: 'Calendario de eventos',
+    to: '/manage/calendar',
+    icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
+  },
+  {
     component: CNavGroup,
     name: 'Mi perfil',
     to: '/base',

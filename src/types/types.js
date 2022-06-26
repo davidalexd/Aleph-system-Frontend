@@ -19,7 +19,7 @@ export const types = {
   eventSetActive:'[event] Set active Permission',
   eventUpdated:'[event] Set update State Permission',
   eventFilter:'[event] Filter Data Permission',
-
+  eventClearActive:'[event] Event clear permission active',
   attendanceCheckingStart:'[attendance] Start cheking state',
   attendanceCheckingFinish:'[attendance] Finish cheking state',
   attendanceUpdate:'[attendance event] Attendance update data',
@@ -27,5 +27,4 @@ export const types = {
   myattendanceFilter:'[attendance event] Attendance User filter',
   attendanceDashboardUpdate:'[attendance event] Attendance data dashboard',
   attendanceUser:'[attendance event] Get Attendance user',
-
 }

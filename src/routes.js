@@ -12,7 +12,8 @@ const asistencias=React.lazy(() => import('./views/asistencias/tablas/Attendance
 const listadoAsistenciasUsuarios=React.lazy(() => import('./views/asistencias/tablas/UsersAttendanceList'))
 //usuarios
 const listadoGeneralUsuarios=React.lazy(() => import('./views/usuarios/tablas/UserList'))
-
+//calendario
+const listadoGeneralDeEventos=React.lazy(() => import('./views/calendario/CalendarScreen'))
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -72,6 +73,8 @@ const routes = [
   { path: '/manage/usersattendances', name: 'Listado General de Asistencias', element: listadoAsistenciasUsuarios},
   //gestion de usuarios
   { path: '/manage/user', name: 'Listado General de Usuarios', element: listadoGeneralUsuarios},
+  //calendario de eventos de permiso
+  { path: '/manage/calendar', name: 'Eventos de autorizaciones activas', element: listadoGeneralDeEventos},
   { path: '/base', name: 'Base', element: Cards, exact: true },
   { path: '/base/accordion', name: 'Accordion', element: Accordion },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },
