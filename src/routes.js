@@ -10,6 +10,8 @@ const listadoPermisosUsuarios = React.lazy(() => import('./views/permisos/tablas
 //Asistencias
 const asistencias=React.lazy(() => import('./views/asistencias/tablas/AttendanceList'))
 const listadoAsistenciasUsuarios=React.lazy(() => import('./views/asistencias/tablas/UsersAttendanceList'))
+//usuarios
+const listadoGeneralUsuarios=React.lazy(() => import('./views/usuarios/tablas/UserList'))
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -68,6 +70,8 @@ const routes = [
   //asistencias
   { path: '/manage/myattendances', name: 'Listado de mis Asistencias', element: asistencias },
   { path: '/manage/usersattendances', name: 'Listado General de Asistencias', element: listadoAsistenciasUsuarios},
+  //gestion de usuarios
+  { path: '/manage/user', name: 'Listado General de Usuarios', element: listadoGeneralUsuarios},
   { path: '/base', name: 'Base', element: Cards, exact: true },
   { path: '/base/accordion', name: 'Accordion', element: Accordion },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },

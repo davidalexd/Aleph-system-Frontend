@@ -126,7 +126,7 @@ const UsersAttendanceList = () => {
               {loading ? (
                 <LoaderTables />
               ) : (
-                <CTable color="dark" align="middle" className="mb-0 border" hover responsive>
+                <CTable color="dark" striped>
                   <CTableHead color="light">
                     <CTableRow>
                       <CTableHeaderCell className="text-center">ID</CTableHeaderCell>

@@ -14,7 +14,7 @@ import 'simplebar/dist/simplebar.min.css'
 // sidebar nav config
 import navigation from '../_nav'
 //rutas administrador
-const rutesAdmistrator = ['Solicitudes de usuarios', 'Asistencias de usuarios','Dashboard']
+const rutesAdmistrator = ['Solicitudes de usuarios', 'Asistencias de usuarios','Dashboard','Gestion de usuarios']
 //rutas usuario
 const rutesEmployee = ['Mis solicitudes', 'Formulario de permisos','Mis Asistencias']
 const AppSidebar = () => {

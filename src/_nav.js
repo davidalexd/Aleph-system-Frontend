@@ -20,6 +20,7 @@ import {
   cilStar,
   cilTask,
   cilUser,
+  cilUserPlus,
   cilWallet,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
@@ -64,6 +65,12 @@ const _nav = [
     name: 'Asistencias de usuarios',
     to: '/manage/usersattendances',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Gestion de usuarios',
+    to: '/manage/user',
+    icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
   },
   {
     component: CNavGroup,
