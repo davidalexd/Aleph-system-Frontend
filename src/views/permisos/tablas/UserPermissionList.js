@@ -15,11 +15,11 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import PermissionModalUser from './PermissionModalUser'
 import { uiOpenModal } from 'src/actions/ui'
-import { eventSetActive, getUserPermissions } from 'src/actions/permissions'
+import { eventPermissionsFilter, eventSetActive, getUserPermissions } from 'src/actions/permissions'
 import Moment from 'react-moment'
 import 'moment/locale/es-mx'
 import { LoaderTables } from 'src/components/loader/LoaderTables'
@@ -41,7 +41,8 @@ const statesValues = {
 }
 const UserPermissionList = () => {
   const dispatch = useDispatch()
-  const { permissions } = useSelector((state) => state.permission);
+  const [valueSearch, setValueSearch] = useState("")
+  const { permissions,dataFilter} = useSelector((state) => state.permission);
   const { loading } = useSelector((state) => state.ui)
   useEffect(() => {
     dispatch(getUserPermissions());
@@ -49,6 +50,11 @@ const UserPermissionList = () => {
   const handleClickInfoPermisse = (permission) => {
     dispatch(eventSetActive(permission));
     dispatch(uiOpenModal())
+  }
+
+  const handleSearch =(e)=>{
+    setValueSearch(e.target.value)
+    dispatch(eventPermissionsFilter(e.target.value))
   }
   return (
     <>
@@ -67,9 +73,11 @@ const UserPermissionList = () => {
                 </CFormLabel>
                 <CCol sm={10}>
                   <CFormInput
-                    type="email"
-                    id="colFormLabel"
-                    placeholder="buscar por id, tipo de permisos o estado,etc"
+                  type="text"
+                  name="valueSearch"
+                  value={valueSearch}
+                  onChange={handleSearch}
+                  placeholder="buscar por id, tipo de permisos o estado,etc"
                   />
                 </CCol>
               </CRow>
@@ -88,7 +96,7 @@ const UserPermissionList = () => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {permissions?.map((el) => (
+                  {(dataFilter.length>0?dataFilter:permissions).map((el) => (
                     <CTableRow key={el.id}>
                       <CTableHeaderCell scope="row">{el.id}</CTableHeaderCell>
                       <CTableDataCell>{TiposDeAutorizacion[el.reference]}</CTableDataCell>

@@ -21,8 +21,10 @@ export const startUpdateAttendance = (data) => {
           title: 'Datos Actualizados',
           text: body.message,
         })
+        dispatch(checkingFininsh())
       }
-      dispatch(checkingFininsh())
+      
+  dispatch(checkingFininsh())
     } catch (error) {
       dispatch(checkingFininsh())
       Swal.fire({
@@ -56,12 +58,11 @@ export const getAttendance = ()=>{
         const {dataAttendance,dateRegister,dataAllStatistic}=body.data
         dispatch(Update(dataAttendance))
         dispatch(UpdateDashboard({dateRegister,dataAllStatistic}))
-      }else{
-        console.log('error hable con el administrador')
+        dispatch(finishLoading())
       }
       dispatch(finishLoading())
     }catch(error){
-
+      dispatch(finishLoading())
       console.log(error)
     }
 
@@ -111,6 +112,4 @@ export const eventUserAttendanceFilter=(attendancesUser)=>({
   type:types.myattendanceFilter,
   payload:attendancesUser
 })
-
-
 

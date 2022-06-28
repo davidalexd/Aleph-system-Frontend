@@ -12,7 +12,8 @@ export const eventStartAddNew = (data) => {
     try {
       const resp = await fetchConToken('permissions', dataRef, 'POST')
       const body = await resp.json()
-      if (body) {
+      
+      if (body.data) {
         Swal.fire({
           icon: 'success',
           title: 'Datos Guardados',

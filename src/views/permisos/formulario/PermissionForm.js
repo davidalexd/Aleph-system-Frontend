@@ -58,7 +58,7 @@ const PermissionForm = () => {
   const [formValues, setFormValues] = useState(initEvent)
   const { name } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
-  const { startEvent, endEvent, typeService, quantityHours, justification } = formValues
+  const { startEvent, endEvent, typeService, quantityHours, justification,task } = formValues
   const [dateCreate, setDateCreate] = useState(now.toDate())
   const [dateStart, setDateStart] = useState(now.toDate())
   const [dateEnd, setDateEnd] = useState(nowPlus1.toDate())
@@ -130,11 +130,35 @@ const PermissionForm = () => {
     e.preventDefault()
     const momentStart = moment(startEvent)
     const momentEnd = moment(endEvent)
+    const momentNow =moment()
+ 
+
+    if (momentStart.isSameOrBefore(momentNow)) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Lo siento..',
+        text: 'La fecha debe ser mayor a la fecha !',
+      })
+    }
     if (momentStart.isSameOrAfter(momentEnd)) {
       return Swal.fire({
         icon: 'error',
         title: 'Lo siento..',
         text: 'La fecha fin debe ser mayor a la fecha de inicio!',
+      })
+    }
+    if (justification==="") {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Lo siento..',
+        text: 'El comentario no debe estar vacio',
+      })
+    }
+    if (typePermission != TiposDeAutorizacion[0] && task.length<1) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Lo siento..',
+        text: 'Las tareas no deben estar  estar vacias',
       })
     }
     dispatch(eventStartAddNew(formValues))

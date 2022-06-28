@@ -125,7 +125,7 @@ const UsersAttendanceList = () => {
               <br />
               {loading ? (
                 <LoaderTables />
-              ) : (
+              ) : (checking?( <LoaderTables />):(
                 <CTable color="dark" striped>
                   <CTableHead color="light">
                     <CTableRow>
@@ -233,7 +233,7 @@ const UsersAttendanceList = () => {
                     ))}
                   </CTableBody>
                 </CTable>
-              )}
+              ))}
             </CCardBody>
           </CCard>
         </CCol>
